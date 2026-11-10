@@ -5,7 +5,7 @@
   "osLocalBaseline": "I1 revisada e fase 6 preexistentes; hashes em os-input-sha256.json",
   "contract": "2.0.0-os-baseline.1",
   "jarSha256": "d135989e267d2a59e8472dea6821eca1aab362a5377af99a33bcf5818be15540",
-  "osPatchSha256": "f94d3c637aca6f49d445318dadc9cb0bc09f37f168facf10ed852c091127e45e",
+  "osPatchSha256": "b6279d6ce6501aade21ea069142ee6a8850dd76ff20ecb1ef2a00818458daf10",
   "testedAt": "2026-11-09T22:04:15-03:00",
   "osSchema": "i2_review",
   "inventoryDatabase": "inventory_db",
@@ -13,5 +13,14 @@
   "inventoryTests": 93,
   "inventoryPostgresI2Tests": 9,
   "osUnitTests": 121,
-  "osIntegrationI2Tests": 1
+  "osIntegrationI2Tests": 1,
+  "publication": {
+    "date": "2026-11-10",
+    "inventoryImplementation": "a3f8f366c41e5012901c844126d2703daf35d17c",
+    "osI1": "e1c9a760db2e03122e6650bb00e94c986ff5e2d1",
+    "osI2": "2dc0cfb9ef7efb6310155bf57e40e3923e9552c7",
+    "inventoryBranch": "codex/inventory-i2",
+    "osBranch": "codex/inventory-i2",
+    "cleanOsSchema": "i2_release_20261110"
+  }
 }

@@ -1,9 +1,9 @@
 diff --git a/src/test/java/br/com/fiap/numberone/serviceorder/saga/InventoryI2IT.java b/src/test/java/br/com/fiap/numberone/serviceorder/saga/InventoryI2IT.java
 new file mode 100644
-index 0000000..2a3ef18
+index 0000000..09060ae
 --- /dev/null
 +++ b/src/test/java/br/com/fiap/numberone/serviceorder/saga/InventoryI2IT.java
-@@ -0,0 +1,362 @@
+@@ -0,0 +1,359 @@
 +package br.com.fiap.numberone.serviceorder.saga;
 +
 +import br.com.fiap.numberone.serviceorder.infrastructure.messaging.BillingInboxHandler;
@@ -363,6 +363,3 @@ index 0000000..2a3ef18
 +
 +    private record Forwarded(String method, String path, String key, String correlation, int status) { }
 +}
-+
-+
-+

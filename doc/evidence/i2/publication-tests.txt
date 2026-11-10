@@ -1,0 +1,11 @@
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.026 s -- in br.com.fiap.numberone.serviceorder.infrastructure.integration.MaterialReferenceConfigurationTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.066 s -- in br.com.fiap.numberone.serviceorder.infrastructure.messaging.SqsBillingConfigurationTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.093 s -- in br.com.fiap.numberone.shared.security.unit.infrastructure.GatewayTrustTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.013 s -- in br.com.fiap.numberone.shared.security.unit.infrastructure.LocalAuthenticatedUserProviderTest
+[INFO] Tests run: 121, Failures: 0, Errors: 0, Skipped: 0
+I2 OS order=997be46d-97fa-41e9-af2e-e55f93e90051 closed=1f2bc77a-fc0c-46c2-ad33-9716d1d6e9ee/f7e64089-d135-4314-87cc-d95cf971655b reversed=7fbedb89-8616-44e7-b21a-0c9cfe7a8742/9e2ade89-d6ba-4ee0-a45d-8492f9f8f4e2 rejected=584a96d7-cf95-4955-9520-c2ed20dc6454 balances=[5,4,5,5] Billing calls=1 AFTER all 3 stock attempts
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 30.18 s -- in br.com.fiap.numberone.serviceorder.saga.InventoryI2IT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+[INFO] Total time:  01:41 min
+[INFO] Finished at: 2026-11-10T16:05:15Z
