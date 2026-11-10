@@ -23,6 +23,11 @@ public class OperacaoConsumoPersistenceAdapter
     }
 
     @Override
+    public void bloquearOperacao(UUID operationId) {
+        repository.bloquearOperacao(operationId);
+    }
+
+    @Override
     public Optional<OperacaoConsumoEstoque> buscarPorOperationId(
             UUID operationId) {
 

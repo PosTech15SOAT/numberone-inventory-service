@@ -6,6 +6,7 @@ import br.com.numberone.inventory.domain.port.out.ItemEstoqueRepositoryPort;
 
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -36,6 +37,11 @@ public class ItemEstoquePersistenceAdapter
     public Optional<ItemEstoque> buscarPorIdParaAtualizacao(UUID id) {
         return repository.buscarPorIdParaAtualizacao(id)
                 .map(ItemEstoqueEntity::toDomain);
+    }
+
+    @Override
+    public List<ItemEstoque> listarAtivos() {
+        return repository.findByAtivoTrueOrderByCodigo().stream().map(ItemEstoqueEntity::toDomain).toList();
     }
 
     @Override

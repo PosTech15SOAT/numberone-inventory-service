@@ -17,7 +17,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(controllers = ConsultarPrecosController.class)
+@WebMvcTest(controllers = ConsultarPrecosController.class, properties = "app.security.billing-token=test-billing")
 class ConsultarPrecosWebMvcTest {
 
     @Autowired
@@ -40,6 +40,8 @@ class ConsultarPrecosWebMvcTest {
                 ));
 
         mockMvc.perform(post("/internal/inventory/consultar-precos")
+                        .header("Authorization", "Bearer test-billing")
+                        .header("X-Correlation-Id", UUID.randomUUID().toString())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"inventoryItemIds\":[\"" + id + "\"]}"))
                 .andExpect(status().isOk())
@@ -54,6 +56,8 @@ class ConsultarPrecosWebMvcTest {
     @Test
     void deveRetornar400ParaListaVazia() throws Exception {
         mockMvc.perform(post("/internal/inventory/consultar-precos")
+                        .header("Authorization", "Bearer test-billing")
+                        .header("X-Correlation-Id", UUID.randomUUID().toString())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"inventoryItemIds\":[]}"))
                 .andExpect(status().isBadRequest())

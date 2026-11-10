@@ -7,6 +7,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface OperacaoConsumoRepositoryPort {
+    void bloquearOperacao(UUID operationId);
+
 
     Optional<OperacaoConsumoEstoque> buscarPorOperationId(
             UUID operationId

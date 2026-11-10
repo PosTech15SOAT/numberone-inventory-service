@@ -5,6 +5,9 @@ import br.com.numberone.inventory.domain.model.OperacaoConsumoEstoque;
 import br.com.numberone.inventory.domain.model.ResultadoConsumoEstoque;
 import br.com.numberone.inventory.domain.model.SolicitacaoConsumoEstoque;
 import br.com.numberone.inventory.domain.model.StatusOperacaoConsumo;
+import br.com.numberone.inventory.domain.port.out.ItemEstoqueRepositoryPort;
+import br.com.numberone.inventory.domain.port.out.MovimentacaoEstoqueRepositoryPort;
+import br.com.numberone.inventory.domain.port.out.OperacaoConsumoItemRepositoryPort;
 import br.com.numberone.inventory.domain.port.out.OperacaoConsumoRepositoryPort;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -36,7 +39,10 @@ class ConsumirEstoqueServiceTest {
 
         service = new ConsumirEstoqueService(
                 repository,
-                calculadorHash
+                calculadorHash,
+                mock(ItemEstoqueRepositoryPort.class),
+                mock(OperacaoConsumoItemRepositoryPort.class),
+                mock(MovimentacaoEstoqueRepositoryPort.class)
         );
 
         operationId = UUID.randomUUID();
