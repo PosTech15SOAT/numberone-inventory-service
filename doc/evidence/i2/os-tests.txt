@@ -1,0 +1,7 @@
+I2 OS order=7861cb85-b7bf-4166-bfac-7c23a3b813da closed=808e5ce9-dd37-4feb-afe3-bfbe28a44c5a/cb5a568f-84ae-4aa8-b0e4-8cb63e22929a reversed=8c46b12d-77d8-4528-9330-8c09d26f3611/af125a86-dfaa-484c-b7a1-d1fdb6b6fa7c rejected=c42e3e13-a8d1-4803-a385-8d8be4d777a0 balances=[5,4,5,5] Billing calls=1 AFTER all 3 stock attempts
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 28.64 s -- in br.com.fiap.numberone.serviceorder.saga.InventoryI2IT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+[INFO] Total time:  50.536 s
+[INFO] Finished at: 2026-11-10T01:04:15Z
+[INFO] Tests run: 121, Failures: 0, Errors: 0, Skipped: 0

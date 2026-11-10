@@ -13,6 +13,7 @@ public class OperacaoConsumoEstoque {
     private final String requestHash;
 
     private StatusOperacaoConsumo status;
+    private UUID compensationId;
 
     public OperacaoConsumoEstoque(
             UUID operationId,
@@ -21,6 +22,31 @@ public class OperacaoConsumoEstoque {
             UUID responsibleUserId,
             String requestHash,
             StatusOperacaoConsumo status) {
+        this(operationId, serviceOrderId, serviceOrderItemId, responsibleUserId, requestHash, status, null);
+    }
+
+    public OperacaoConsumoEstoque(UUID operationId, UUID serviceOrderId, UUID serviceOrderItemId,
+                                  UUID responsibleUserId, String requestHash, StatusOperacaoConsumo status,
+                                  UUID compensationId) {
+        if (status == StatusOperacaoConsumo.CLOSED) {
+            if (serviceOrderId != null || serviceOrderItemId != null || responsibleUserId != null || requestHash != null) {
+                throw new IllegalArgumentException("Fechamento sem baixa nao possui pedido de consumo.");
+            }
+            this.operationId = Objects.requireNonNull(operationId);
+            this.serviceOrderId = null;
+            this.serviceOrderItemId = null;
+            this.responsibleUserId = null;
+            this.requestHash = null;
+            this.status = status;
+            this.compensationId = Objects.requireNonNull(compensationId);
+            return;
+        }
+        if (status == StatusOperacaoConsumo.REVERSED) {
+            Objects.requireNonNull(compensationId);
+        } else if (compensationId != null) {
+            throw new IllegalArgumentException("Compensacao exige estado terminal de compensacao.");
+        }
+        this.compensationId = compensationId;
 
         this.operationId = Objects.requireNonNull(
                 operationId, "operationId obrigatorio");
@@ -66,8 +92,22 @@ public class OperacaoConsumoEstoque {
 
     public boolean possuiMesmoRequestHash(String outroHash) {
         return outroHash != null
-                && requestHash.equalsIgnoreCase(outroHash);
+                && requestHash != null && requestHash.equalsIgnoreCase(outroHash);
     }
+
+    public static OperacaoConsumoEstoque fechar(UUID operationId, UUID compensationId) {
+        return new OperacaoConsumoEstoque(operationId, null, null, null, null, StatusOperacaoConsumo.CLOSED, compensationId);
+    }
+
+    public void reverter(UUID compensationId) {
+        if (status != StatusOperacaoConsumo.CONSUMED) {
+            throw new IllegalStateException("Somente consumo confirmado pode ser revertido.");
+        }
+        this.compensationId = Objects.requireNonNull(compensationId);
+        this.status = StatusOperacaoConsumo.REVERSED;
+    }
+
+    public UUID getCompensationId() { return compensationId; }
 
     public UUID getOperationId() {
         return operationId;

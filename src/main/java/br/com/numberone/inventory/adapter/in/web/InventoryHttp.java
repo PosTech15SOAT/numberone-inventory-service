@@ -31,5 +31,9 @@ final class InventoryHttp {
     }
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    record Problem(String code, String message, UUID correlationId, UUID operationId) { }
+    record Problem(String code, String message, UUID correlationId, UUID operationId, UUID compensationId) {
+        Problem(String code, String message, UUID correlationId, UUID operationId) {
+            this(code, message, correlationId, operationId, null);
+        }
+    }
 }

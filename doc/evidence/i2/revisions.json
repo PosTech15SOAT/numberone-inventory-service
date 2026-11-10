@@ -1,0 +1,17 @@
+{
+  "inventoryBase": "069f8a074b6bc0ed4e139e19571bc167851b7dfd",
+  "inventoryBranch": "codex/inventory-i2",
+  "osHead": "d1a2f81c4203c0601c7973aa44fb0bd8c004afea",
+  "osLocalBaseline": "I1 revisada e fase 6 preexistentes; hashes em os-input-sha256.json",
+  "contract": "2.0.0-os-baseline.1",
+  "jarSha256": "d135989e267d2a59e8472dea6821eca1aab362a5377af99a33bcf5818be15540",
+  "osPatchSha256": "f94d3c637aca6f49d445318dadc9cb0bc09f37f168facf10ed852c091127e45e",
+  "testedAt": "2026-11-09T22:04:15-03:00",
+  "osSchema": "i2_review",
+  "inventoryDatabase": "inventory_db",
+  "postgres": "17.9",
+  "inventoryTests": 93,
+  "inventoryPostgresI2Tests": 9,
+  "osUnitTests": 121,
+  "osIntegrationI2Tests": 1
+}

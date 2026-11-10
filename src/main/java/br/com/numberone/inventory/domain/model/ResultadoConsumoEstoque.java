@@ -8,7 +8,8 @@ import java.util.UUID;
 public record ResultadoConsumoEstoque(
         UUID operationId,
         StatusOperacaoConsumo status,
-        List<UUID> movements
+        List<UUID> movements,
+        UUID compensationId
 ) {
 
     public ResultadoConsumoEstoque {
@@ -28,6 +29,10 @@ public record ResultadoConsumoEstoque(
         this(operationId, status, List.of());
     }
 
+    public ResultadoConsumoEstoque(UUID operationId, StatusOperacaoConsumo status, List<UUID> movements) {
+        this(operationId, status, movements, null);
+    }
+
     public static ResultadoConsumoEstoque from(
             OperacaoConsumoEstoque operacao) {
 
@@ -38,7 +43,7 @@ public record ResultadoConsumoEstoque(
 
         return new ResultadoConsumoEstoque(
                 operacao.getOperationId(),
-                operacao.getStatus()
+                operacao.getStatus(), List.of(), operacao.getCompensationId()
         );
     }
 }

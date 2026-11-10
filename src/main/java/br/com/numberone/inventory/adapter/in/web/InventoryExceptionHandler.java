@@ -1,6 +1,7 @@
 package br.com.numberone.inventory.adapter.in.web;
 
 import br.com.numberone.inventory.application.service.ConflitoIdempotenciaException;
+import br.com.numberone.inventory.application.service.ConflitoCompensacaoException;
 import br.com.numberone.inventory.application.service.ItemIndisponivelException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.dao.DataAccessException;
@@ -18,6 +19,12 @@ import java.util.UUID;
 
 @RestControllerAdvice(assignableTypes = {InventoryInternalController.class, InventoryAdminController.class})
 class InventoryExceptionHandler {
+    @ExceptionHandler(ConflitoCompensacaoException.class)
+    ResponseEntity<InventoryHttp.Problem> compensacao(ConflitoCompensacaoException ex, HttpServletRequest request) {
+        return ResponseEntity.status(409).body(new InventoryHttp.Problem(ex.getMessage(),
+                "Compensacao ou tentativa em conflito: " + ex.getMessage(),
+                (UUID) request.getAttribute(InventoryHttp.REQUEST_CORRELATION), ex.getOperationId(), ex.getCompensationId()));
+    }
     @ExceptionHandler({IllegalArgumentException.class, ArithmeticException.class, HttpMessageNotReadableException.class,
             MissingRequestHeaderException.class, MethodArgumentNotValidException.class, MethodArgumentTypeMismatchException.class})
     ResponseEntity<InventoryHttp.Problem> invalid(HttpServletRequest request) {

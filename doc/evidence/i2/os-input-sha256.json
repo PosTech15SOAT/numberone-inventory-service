@@ -1,0 +1,14 @@
+[
+  {
+    "Hash": "2BE06FCB8D3C487FCC2DA402437E32FCCBD50A38A91D809493E6675E97E35E73",
+    "Path": "D:\\Dev\\PosTech15SOAT\\tmp\\fase-2\\numberone-service-order\\src\\main\\java\\br\\com\\fiap\\numberone\\serviceorder\\infrastructure\\integration\\HttpSagaParticipants.java"
+  },
+  {
+    "Hash": "813EF91BE6ECCDABF5544BCC056683ADE6048211034EE3AA51E1CB7E8D307862",
+    "Path": "D:\\Dev\\PosTech15SOAT\\tmp\\fase-2\\numberone-service-order\\src\\main\\java\\br\\com\\fiap\\numberone\\serviceorder\\application\\services\\SagaCompensation.java"
+  },
+  {
+    "Hash": "29378FF6CD9917E0257E581776B42CDC346470D3116B20F1B445A50D8B1ED244",
+    "Path": "D:\\Dev\\PosTech15SOAT\\tmp\\fase-2\\numberone-service-order\\doc\\contracts\\saga\\v2\\inventory.openapi.yaml"
+  }
+]

@@ -23,7 +23,23 @@ class MovimentacaoEstoquePersistenceAdapter implements MovimentacaoEstoqueReposi
     @Override
     public List<UUID> buscarIdsPorOperacao(UUID operationId) {
         return repository.findByOperationIdOrderByItemEstoqueId(operationId)
-                .stream().map(MovimentacaoEstoqueEntity::getId).toList();
+                .stream().filter(m -> m.getOriginalMovementId() == null).map(MovimentacaoEstoqueEntity::getId).toList();
+    }
+
+    public List<UUID> buscarIdsInversos(UUID operationId) {
+        return repository.findByOperationIdOrderByItemEstoqueId(operationId)
+                .stream().filter(m -> m.getOriginalMovementId() != null).map(MovimentacaoEstoqueEntity::getId).toList();
+    }
+
+    public List<MovimentacaoEstoque> buscarBaixas(UUID operationId) {
+        return repository.findByOperationIdOrderByItemEstoqueId(operationId)
+                .stream().filter(m -> m.getOriginalMovementId() == null).map(MovimentacaoEstoqueEntity::toDomain).toList();
+    }
+
+    public MovimentacaoEstoque salvarInverso(MovimentacaoEstoque movimento, UUID operationId, UUID originalId, UUID compensationId) {
+        var entity = MovimentacaoEstoqueEntity.fromDomain(movimento, operationId);
+        entity.vincularInverso(originalId, compensationId);
+        return repository.save(entity).toDomain();
     }
 
     @Override

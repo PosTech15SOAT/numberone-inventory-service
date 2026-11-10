@@ -23,6 +23,7 @@ class InventoryAccessFilter extends OncePerRequestFilter {
     private static final Set<String> HEALTH = Set.of("/actuator/health", "/actuator/health/liveness",
             "/actuator/health/readiness");
     private static final Pattern OS_READ = Pattern.compile(INTERNAL + "(items|operations)/[^/]+");
+    private static final Pattern OS_REVERSAL = Pattern.compile(INTERNAL + "consumptions/[^/]+/reversal");
     private static final Pattern ADMIN = Pattern.compile("/api/admin/(itens(?:/[^/]+)?"
             + "|estoque/(?:entrada|itens/[^/]+/movimentacoes))");
 
@@ -68,7 +69,7 @@ class InventoryAccessFilter extends OncePerRequestFilter {
                 return;
             }
             boolean osRoute = "GET".equals(method) && OS_READ.matcher(path).matches()
-                    || "POST".equals(method) && path.equals(INTERNAL + "consumptions");
+                    || "POST".equals(method) && (path.equals(INTERNAL + "consumptions") || OS_REVERSAL.matcher(path).matches());
             boolean billingRoute = "POST".equals(method) && path.equals(INTERNAL + "consultar-precos");
             if (!(os && osRoute || billing && billingRoute)) {
                 error(response, 403, "FORBIDDEN", "Rota fora do escopo do servico.", responseCorrelation);

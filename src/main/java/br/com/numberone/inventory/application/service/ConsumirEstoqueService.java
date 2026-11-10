@@ -101,6 +101,9 @@ public class ConsumirEstoqueService {
 
     private Optional<OperacaoConsumoEstoque> operacaoExistente(UUID id, String hash) {
         return operacaoRepository.buscarPorOperationId(id).map(operacao -> {
+            if (operacao.getStatus() == StatusOperacaoConsumo.CLOSED || operacao.getStatus() == StatusOperacaoConsumo.REVERSED) {
+                throw new ConflitoCompensacaoException("ATTEMPT_" + operacao.getStatus(), id, operacao.getCompensationId());
+            }
             if (!operacao.possuiMesmoRequestHash(hash)) {
                 throw new ConflitoIdempotenciaException(id);
             }
@@ -109,9 +112,11 @@ public class ConsumirEstoqueService {
     }
 
     private ResultadoConsumoEstoque resultado(OperacaoConsumoEstoque operacao) {
-        if (operacao.getStatus() == StatusOperacaoConsumo.CONSUMED) {
+        if (operacao.getStatus() == StatusOperacaoConsumo.CONSUMED || operacao.getStatus() == StatusOperacaoConsumo.REVERSED) {
             return new ResultadoConsumoEstoque(operacao.getOperationId(), operacao.getStatus(),
-                    movimentoRepository.buscarIdsPorOperacao(operacao.getOperationId()));
+                    operacao.getStatus() == StatusOperacaoConsumo.REVERSED
+                            ? movimentoRepository.buscarIdsInversos(operacao.getOperationId())
+                            : movimentoRepository.buscarIdsPorOperacao(operacao.getOperationId()), operacao.getCompensationId());
         }
         return ResultadoConsumoEstoque.from(operacao);
     }

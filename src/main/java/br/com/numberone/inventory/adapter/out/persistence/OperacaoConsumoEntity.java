@@ -23,21 +23,24 @@ public class OperacaoConsumoEntity {
     @Column(name = "operation_id", nullable = false)
     private UUID operationId;
 
-    @Column(name = "ordem_servico_id", nullable = false)
+    @Column(name = "ordem_servico_id")
     private UUID serviceOrderId;
 
-    @Column(name = "item_ordem_servico_id", nullable = false)
+    @Column(name = "item_ordem_servico_id")
     private UUID serviceOrderItemId;
 
-    @Column(name = "usuario_responsavel_id", nullable = false)
+    @Column(name = "usuario_responsavel_id")
     private UUID responsibleUserId;
 
-    @Column(name = "request_hash", nullable = false, length = 64)
+    @Column(name = "request_hash", length = 64)
     private String requestHash;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, length = 30)
     private StatusOperacaoConsumo status;
+
+    @Column(name = "compensation_id")
+    private UUID compensationId;
 
     @Column(name = "created_at", nullable = false)
     private OffsetDateTime createdAt;
@@ -62,6 +65,7 @@ public class OperacaoConsumoEntity {
                 operacao.getResponsibleUserId();
         entity.requestHash = operacao.getRequestHash();
         entity.status = operacao.getStatus();
+        entity.compensationId = operacao.getCompensationId();
 
         OffsetDateTime agora =
                 OffsetDateTime.now(ZoneOffset.UTC);
@@ -79,13 +83,24 @@ public class OperacaoConsumoEntity {
                 serviceOrderItemId,
                 responsibleUserId,
                 requestHash,
-                status
+                status, compensationId
         );
     }
 
 
     public void atualizarStatus(
         StatusOperacaoConsumo novoStatus) {
+        atualizarStatus(novoStatus, null);
+    }
+
+    public void atualizarStatus(StatusOperacaoConsumo novoStatus, UUID compensationId) {
+        if (this.status == StatusOperacaoConsumo.CONSUMED && novoStatus == StatusOperacaoConsumo.REVERSED
+                && compensationId != null) {
+            this.status = novoStatus;
+            this.compensationId = compensationId;
+            this.updatedAt = OffsetDateTime.now(ZoneOffset.UTC);
+            return;
+        }
 
        if (novoStatus == null) {
            throw new IllegalArgumentException(
@@ -99,7 +114,7 @@ public class OperacaoConsumoEntity {
             );
         }
 
-        if (novoStatus == StatusOperacaoConsumo.PROCESSING) {
+        if (novoStatus != StatusOperacaoConsumo.CONSUMED && novoStatus != StatusOperacaoConsumo.INSUFFICIENT_STOCK) {
             throw new IllegalArgumentException(
                     "O novo status deve ser definitivo."
             );

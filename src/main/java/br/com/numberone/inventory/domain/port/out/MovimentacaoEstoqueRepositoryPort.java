@@ -15,4 +15,8 @@ public interface MovimentacaoEstoqueRepositoryPort {
     List<UUID> buscarIdsPorOperacao(UUID operationId);
 
     List<MovimentacaoEstoque> buscarPorItem(UUID itemId);
+
+    List<MovimentacaoEstoque> buscarBaixas(UUID operationId);
+    List<UUID> buscarIdsInversos(UUID operationId);
+    MovimentacaoEstoque salvarInverso(MovimentacaoEstoque movimento, UUID operationId, UUID originalId, UUID compensationId);
 }

@@ -1,0 +1,7 @@
+OK referencia decimal, precos Billing e escopos de OS, Billing e ADMIN
+OK lote 9a5c0c35-9743-419a-b892-cef73c23744b, movimentos 339a61e1-5b75-477c-9e70-7ec8ca7f1b40,96a4f775-29ba-4073-b00e-e056ac815039, saldos 5/3 -> 2/2
+OK replay canonico e conflito com alteracao de corpo
+OK recusa c280bfd5-cc74-4368-a4dd-51f3ac26d689, zero movimentos, saldo preservado apos reposicao e replay
+OK validacao de quantidade inteira, overflow e divergencia da chave
+OK disputa f3baafe9-2ba4-4ade-8af1-b22a496df08f / 40a0b12c-e33f-414c-9b78-a757eee5535f, HTTP 200/409, saldo 1 -> 0
+OK replay simultaneo d4824e64-ff93-4d71-879c-cc7b13660904, um movimento e saldo 2 -> 1
