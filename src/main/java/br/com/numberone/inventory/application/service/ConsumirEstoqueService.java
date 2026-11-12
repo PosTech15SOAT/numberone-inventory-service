@@ -1,7 +1,9 @@
 package br.com.numberone.inventory.application.service;
 
+import br.com.numberone.inventory.application.port.in.ConsumirEstoqueUseCase;
+
 import br.com.numberone.inventory.domain.model.*;
-import br.com.numberone.inventory.domain.port.out.*;
+import br.com.numberone.inventory.application.port.out.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +17,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class ConsumirEstoqueService {
+public class ConsumirEstoqueService implements ConsumirEstoqueUseCase {
     private final OperacaoConsumoRepositoryPort operacaoRepository;
     private final CalculadorHashConsumoService calculadorHash;
     private final ItemEstoqueRepositoryPort itemRepository;

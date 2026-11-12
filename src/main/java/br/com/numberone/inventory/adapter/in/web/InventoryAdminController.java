@@ -1,6 +1,6 @@
 package br.com.numberone.inventory.adapter.in.web;
 
-import br.com.numberone.inventory.application.service.CatalogoEstoqueService;
+import br.com.numberone.inventory.application.port.in.GerenciarCatalogoUseCase;
 import br.com.numberone.inventory.application.service.ItemIndisponivelException;
 import br.com.numberone.inventory.domain.model.ItemEstoque;
 import br.com.numberone.inventory.domain.model.MovimentacaoEstoque;
@@ -21,9 +21,9 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/admin")
 class InventoryAdminController {
-    private final CatalogoEstoqueService catalogo;
+    private final GerenciarCatalogoUseCase catalogo;
 
-    InventoryAdminController(CatalogoEstoqueService catalogo) {
+    InventoryAdminController(GerenciarCatalogoUseCase catalogo) {
         this.catalogo = catalogo;
     }
 

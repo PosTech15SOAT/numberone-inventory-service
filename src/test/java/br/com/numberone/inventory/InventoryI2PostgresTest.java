@@ -2,7 +2,7 @@ package br.com.numberone.inventory;
 
 import br.com.numberone.inventory.application.service.*;
 import br.com.numberone.inventory.domain.model.*;
-import br.com.numberone.inventory.domain.port.out.*;
+import br.com.numberone.inventory.application.port.out.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.springframework.beans.factory.annotation.Autowired;

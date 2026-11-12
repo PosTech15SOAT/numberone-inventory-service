@@ -1,8 +1,8 @@
 package br.com.numberone.inventory.adapter.in.web;
 
-import br.com.numberone.inventory.application.service.CatalogoEstoqueService;
-import br.com.numberone.inventory.application.service.ConsumirEstoqueService;
-import br.com.numberone.inventory.application.service.CompensarEstoqueService;
+import br.com.numberone.inventory.application.port.in.GerenciarCatalogoUseCase;
+import br.com.numberone.inventory.application.port.in.ConsumirEstoqueUseCase;
+import br.com.numberone.inventory.application.port.in.CompensarEstoqueUseCase;
 import br.com.numberone.inventory.domain.model.SolicitacaoCompensacao;
 import br.com.numberone.inventory.application.service.ItemIndisponivelException;
 import br.com.numberone.inventory.domain.model.ResultadoConsumoEstoque;
@@ -22,11 +22,11 @@ import java.util.UUID;
 @RequestMapping("/internal/inventory")
 class InventoryInternalController {
     private static final Logger log = LoggerFactory.getLogger(InventoryInternalController.class);
-    private final CatalogoEstoqueService catalogo;
-    private final ConsumirEstoqueService consumo;
-    private final CompensarEstoqueService compensacao;
+    private final GerenciarCatalogoUseCase catalogo;
+    private final ConsumirEstoqueUseCase consumo;
+    private final CompensarEstoqueUseCase compensacao;
 
-    InventoryInternalController(CatalogoEstoqueService catalogo, ConsumirEstoqueService consumo, CompensarEstoqueService compensacao) {
+    InventoryInternalController(GerenciarCatalogoUseCase catalogo, ConsumirEstoqueUseCase consumo, CompensarEstoqueUseCase compensacao) {
         this.catalogo = catalogo;
         this.consumo = consumo;
         this.compensacao = compensacao;

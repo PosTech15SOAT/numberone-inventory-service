@@ -2,7 +2,7 @@
 package br.com.numberone.inventory.application.service;
 
 import br.com.numberone.inventory.domain.model.ItemEstoque;
-import br.com.numberone.inventory.domain.port.out.ItemEstoqueRepositoryPort;
+import br.com.numberone.inventory.application.port.out.ItemEstoqueRepositoryPort;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

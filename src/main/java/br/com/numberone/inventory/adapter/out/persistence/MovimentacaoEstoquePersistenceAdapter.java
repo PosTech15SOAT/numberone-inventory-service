@@ -1,7 +1,7 @@
 package br.com.numberone.inventory.adapter.out.persistence;
 
 import br.com.numberone.inventory.domain.model.MovimentacaoEstoque;
-import br.com.numberone.inventory.domain.port.out.MovimentacaoEstoqueRepositoryPort;
+import br.com.numberone.inventory.application.port.out.MovimentacaoEstoqueRepositoryPort;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

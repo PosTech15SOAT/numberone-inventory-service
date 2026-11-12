@@ -1,7 +1,7 @@
 
 package br.com.numberone.inventory.adapter.in.web;
 
-import br.com.numberone.inventory.application.service.ConsultarPrecosService;
+import br.com.numberone.inventory.application.port.in.ConsultarPrecosUseCase;
 import br.com.numberone.inventory.application.service.ConsultarPrecosService.ConsultaPrecosException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,11 +21,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class ConsultarPrecosControllerTest {
 
     private MockMvc mockMvc;
-    private ConsultarPrecosService service;
+    private ConsultarPrecosUseCase service;
 
     @BeforeEach
     void configurar() {
-        service = mock(ConsultarPrecosService.class);
+        service = mock(ConsultarPrecosUseCase.class);
         
         var controller = new ConsultarPrecosController(service);
 
@@ -41,7 +41,7 @@ class ConsultarPrecosControllerTest {
 
         when(service.consultar(List.of(id)))
                 .thenReturn(List.of(
-                        new ConsultarPrecosService.PrecoItem(
+                        new ConsultarPrecosUseCase.PrecoItem(
                                 id,
                                 new BigDecimal("200.00"),
                                 "BRL"

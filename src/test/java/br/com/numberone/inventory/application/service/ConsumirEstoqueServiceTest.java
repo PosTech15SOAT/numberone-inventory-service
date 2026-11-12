@@ -5,10 +5,10 @@ import br.com.numberone.inventory.domain.model.OperacaoConsumoEstoque;
 import br.com.numberone.inventory.domain.model.ResultadoConsumoEstoque;
 import br.com.numberone.inventory.domain.model.SolicitacaoConsumoEstoque;
 import br.com.numberone.inventory.domain.model.StatusOperacaoConsumo;
-import br.com.numberone.inventory.domain.port.out.ItemEstoqueRepositoryPort;
-import br.com.numberone.inventory.domain.port.out.MovimentacaoEstoqueRepositoryPort;
-import br.com.numberone.inventory.domain.port.out.OperacaoConsumoItemRepositoryPort;
-import br.com.numberone.inventory.domain.port.out.OperacaoConsumoRepositoryPort;
+import br.com.numberone.inventory.application.port.out.ItemEstoqueRepositoryPort;
+import br.com.numberone.inventory.application.port.out.MovimentacaoEstoqueRepositoryPort;
+import br.com.numberone.inventory.application.port.out.OperacaoConsumoItemRepositoryPort;
+import br.com.numberone.inventory.application.port.out.OperacaoConsumoRepositoryPort;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

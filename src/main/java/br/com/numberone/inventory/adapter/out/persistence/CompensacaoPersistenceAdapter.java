@@ -1,7 +1,7 @@
 package br.com.numberone.inventory.adapter.out.persistence;
 
 import br.com.numberone.inventory.domain.model.*;
-import br.com.numberone.inventory.domain.port.out.CompensacaoRepositoryPort;
+import br.com.numberone.inventory.application.port.out.CompensacaoRepositoryPort;
 import jakarta.persistence.EntityManager;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;

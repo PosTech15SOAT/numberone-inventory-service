@@ -1,7 +1,7 @@
 
 package br.com.numberone.inventory.adapter.in.web;
 
-import br.com.numberone.inventory.application.service.ConsultarPrecosService;
+import br.com.numberone.inventory.application.port.in.ConsultarPrecosUseCase;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -24,7 +24,7 @@ class ConsultarPrecosWebMvcTest {
     private MockMvc mockMvc;
 
     @MockitoBean
-    private ConsultarPrecosService consultarPrecosService;
+    private ConsultarPrecosUseCase consultarPrecosService;
 
     @Test
     void deveRetornar200ComJacksonConfigurado() throws Exception {
@@ -32,7 +32,7 @@ class ConsultarPrecosWebMvcTest {
 
         when(consultarPrecosService.consultar(List.of(id)))
                 .thenReturn(List.of(
-                        new ConsultarPrecosService.PrecoItem(
+                        new ConsultarPrecosUseCase.PrecoItem(
                                 id,
                                 new BigDecimal("200.00"),
                                 "BRL"

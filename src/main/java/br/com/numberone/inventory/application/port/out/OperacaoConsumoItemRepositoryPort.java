@@ -1,5 +1,5 @@
 
-package br.com.numberone.inventory.domain.port.out;
+package br.com.numberone.inventory.application.port.out;
 
 import br.com.numberone.inventory.domain.model.SolicitacaoConsumoEstoque;
 

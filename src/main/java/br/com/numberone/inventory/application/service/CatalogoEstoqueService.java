@@ -1,11 +1,13 @@
 package br.com.numberone.inventory.application.service;
 
+import br.com.numberone.inventory.application.port.in.GerenciarCatalogoUseCase;
+
 import br.com.numberone.inventory.domain.model.ItemEstoque;
 import br.com.numberone.inventory.domain.model.MovimentacaoEstoque;
 import br.com.numberone.inventory.domain.model.OrigemMovimentacao;
 import br.com.numberone.inventory.domain.model.TipoMovimentacao;
-import br.com.numberone.inventory.domain.port.out.ItemEstoqueRepositoryPort;
-import br.com.numberone.inventory.domain.port.out.MovimentacaoEstoqueRepositoryPort;
+import br.com.numberone.inventory.application.port.out.ItemEstoqueRepositoryPort;
+import br.com.numberone.inventory.application.port.out.MovimentacaoEstoqueRepositoryPort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,7 +18,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class CatalogoEstoqueService {
+public class CatalogoEstoqueService implements GerenciarCatalogoUseCase {
     private final ItemEstoqueRepositoryPort itens;
     private final MovimentacaoEstoqueRepositoryPort movimentos;
 

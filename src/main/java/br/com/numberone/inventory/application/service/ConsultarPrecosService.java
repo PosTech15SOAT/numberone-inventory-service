@@ -1,8 +1,11 @@
 
 package br.com.numberone.inventory.application.service;
 
+import br.com.numberone.inventory.application.port.in.ConsultarPrecosUseCase;
+import br.com.numberone.inventory.application.port.in.ConsultarPrecosUseCase.PrecoItem;
+
 import br.com.numberone.inventory.domain.model.ItemEstoque;
-import br.com.numberone.inventory.domain.port.out.ItemEstoqueRepositoryPort;
+import br.com.numberone.inventory.application.port.out.ItemEstoqueRepositoryPort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,7 +16,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Service
-public class ConsultarPrecosService {
+public class ConsultarPrecosService implements ConsultarPrecosUseCase {
 
     private final ItemEstoqueRepositoryPort itemEstoqueRepository;
 
@@ -76,14 +79,7 @@ public class ConsultarPrecosService {
         return List.copyOf(precos);
     }
 
-    public record PrecoItem(
-            UUID inventoryItemId,
-            BigDecimal salePrice,
-            String currency
-    ) {
-    }
-
-    public static class ConsultaPrecosException
+public static class ConsultaPrecosException
             extends RuntimeException {
 
         private final String codigo;

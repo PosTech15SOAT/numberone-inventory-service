@@ -1,7 +1,9 @@
 package br.com.numberone.inventory.application.service;
 
+import br.com.numberone.inventory.application.port.in.CompensarEstoqueUseCase;
+
 import br.com.numberone.inventory.domain.model.*;
-import br.com.numberone.inventory.domain.port.out.*;
+import br.com.numberone.inventory.application.port.out.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +15,7 @@ import java.time.*;
 import java.util.*;
 
 @Service
-public class CompensarEstoqueService {
+public class CompensarEstoqueService implements CompensarEstoqueUseCase {
     private final OperacaoConsumoRepositoryPort operacoes;
     private final CompensacaoRepositoryPort compensacoes;
     private final MovimentacaoEstoqueRepositoryPort movimentos;
