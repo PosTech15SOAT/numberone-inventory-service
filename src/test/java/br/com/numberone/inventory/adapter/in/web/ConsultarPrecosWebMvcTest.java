@@ -1,7 +1,7 @@
 
 package br.com.numberone.inventory.adapter.in.web;
 
-import br.com.numberone.inventory.application.service.ConsultarPrecosService;
+import br.com.numberone.inventory.application.port.in.ConsultarPrecosUseCase;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -17,14 +17,14 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(controllers = ConsultarPrecosController.class)
+@WebMvcTest(controllers = ConsultarPrecosController.class, properties = "app.security.billing-token=test-billing")
 class ConsultarPrecosWebMvcTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockitoBean
-    private ConsultarPrecosService consultarPrecosService;
+    private ConsultarPrecosUseCase consultarPrecosService;
 
     @Test
     void deveRetornar200ComJacksonConfigurado() throws Exception {
@@ -32,7 +32,7 @@ class ConsultarPrecosWebMvcTest {
 
         when(consultarPrecosService.consultar(List.of(id)))
                 .thenReturn(List.of(
-                        new ConsultarPrecosService.PrecoItem(
+                        new ConsultarPrecosUseCase.PrecoItem(
                                 id,
                                 new BigDecimal("200.00"),
                                 "BRL"
@@ -40,6 +40,8 @@ class ConsultarPrecosWebMvcTest {
                 ));
 
         mockMvc.perform(post("/internal/inventory/consultar-precos")
+                        .header("Authorization", "Bearer test-billing")
+                        .header("X-Correlation-Id", UUID.randomUUID().toString())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"inventoryItemIds\":[\"" + id + "\"]}"))
                 .andExpect(status().isOk())
@@ -54,6 +56,8 @@ class ConsultarPrecosWebMvcTest {
     @Test
     void deveRetornar400ParaListaVazia() throws Exception {
         mockMvc.perform(post("/internal/inventory/consultar-precos")
+                        .header("Authorization", "Bearer test-billing")
+                        .header("X-Correlation-Id", UUID.randomUUID().toString())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"inventoryItemIds\":[]}"))
                 .andExpect(status().isBadRequest())

@@ -1,7 +1,7 @@
 
 package br.com.numberone.inventory.adapter.in.web;
 
-import br.com.numberone.inventory.application.service.ConsultarPrecosService;
+import br.com.numberone.inventory.application.port.in.ConsultarPrecosUseCase;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -19,10 +19,10 @@ import java.util.UUID;
 @RequestMapping("/internal/inventory")
 public class ConsultarPrecosController {
 
-    private final ConsultarPrecosService consultarPrecosService;
+    private final ConsultarPrecosUseCase consultarPrecosService;
 
     public ConsultarPrecosController(
-            ConsultarPrecosService consultarPrecosService) {
+            ConsultarPrecosUseCase consultarPrecosService) {
         this.consultarPrecosService = consultarPrecosService;
     }
 

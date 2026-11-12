@@ -1,9 +1,8 @@
-
 package br.com.numberone.inventory.domain.model;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.UUID;
 
 public record SolicitacaoConsumoEstoque(
@@ -13,51 +12,48 @@ public record SolicitacaoConsumoEstoque(
         UUID responsibleUserId,
         List<ItemConsumo> items
 ) {
+    private static final UUID ZERO = new UUID(0, 0);
 
     public SolicitacaoConsumoEstoque {
-        if (operationId == null
-                || serviceOrderId == null
-                || serviceOrderItemId == null
-                || responsibleUserId == null) {
-            throw new IllegalArgumentException(
-                    "Os identificadores da operacao de consumo sao obrigatorios."
-            );
-        }
+        validarId(operationId);
+        validarId(serviceOrderId);
+        validarId(serviceOrderItemId);
+        validarId(responsibleUserId);
 
         if (items == null || items.isEmpty()) {
-            throw new IllegalArgumentException(
-                    "A operacao deve conter pelo menos um item."
-            );
+            throw new IllegalArgumentException("A operacao deve conter pelo menos um item.");
         }
 
-        items = List.copyOf(items);
-
-        Set<UUID> ids = new HashSet<>();
-
+        // A mesma ordem é usada para o hash e para a aquisição dos locks de saldo.
+        Map<String, ItemConsumo> normalizados = new TreeMap<>();
         for (ItemConsumo item : items) {
-            if (!ids.add(item.inventoryItemId())) {
-                throw new IllegalArgumentException(
-                        "Nao sao permitidos itens de estoque duplicados."
-                );
+            if (item == null) {
+                throw new IllegalArgumentException("Item de consumo obrigatorio.");
             }
+            normalizados.merge(item.inventoryItemId().toString(), item, (a, b) ->
+                    new ItemConsumo(a.inventoryItemId(), somarQuantidades(a.quantity(), b.quantity())));
+        }
+        items = List.copyOf(normalizados.values());
+    }
+
+    private static int somarQuantidades(int a, int b) {
+        if (a > Integer.MAX_VALUE - b) {
+            throw new IllegalArgumentException("Quantidade total excede o limite por item.");
+        }
+        return a + b;
+    }
+
+    private static void validarId(UUID id) {
+        if (id == null || ZERO.equals(id)) {
+            throw new IllegalArgumentException("Identificador de consumo invalido.");
         }
     }
 
-    public record ItemConsumo(
-            UUID inventoryItemId,
-            int quantity
-    ) {
+    public record ItemConsumo(UUID inventoryItemId, int quantity) {
         public ItemConsumo {
-            if (inventoryItemId == null) {
-                throw new IllegalArgumentException(
-                        "O identificador do item de estoque e obrigatorio."
-                );
-            }
-
+            validarId(inventoryItemId);
             if (quantity <= 0) {
-                throw new IllegalArgumentException(
-                        "A quantidade consumida deve ser maior que zero."
-                );
+                throw new IllegalArgumentException("A quantidade consumida deve ser maior que zero.");
             }
         }
     }

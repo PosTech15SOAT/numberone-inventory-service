@@ -2,7 +2,7 @@
 package br.com.numberone.inventory.adapter.out.persistence;
 
 import br.com.numberone.inventory.domain.model.SolicitacaoConsumoEstoque;
-import br.com.numberone.inventory.domain.port.out.OperacaoConsumoItemRepositoryPort;
+import br.com.numberone.inventory.application.port.out.OperacaoConsumoItemRepositoryPort;
 
 import org.springframework.stereotype.Repository;
 

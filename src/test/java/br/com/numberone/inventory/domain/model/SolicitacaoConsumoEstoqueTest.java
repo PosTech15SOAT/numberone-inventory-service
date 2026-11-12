@@ -73,7 +73,7 @@ class SolicitacaoConsumoEstoqueTest {
 
     @Test
     void naoDeveAceitarItemNulo() {
-        assertThrows(NullPointerException.class,
+        assertThrows(IllegalArgumentException.class,
                 () -> criarSolicitacao(
                         java.util.Arrays.asList(
                                 (SolicitacaoConsumoEstoque.ItemConsumo) null
@@ -82,16 +82,18 @@ class SolicitacaoConsumoEstoqueTest {
     }
 
     @Test
-    void naoDeveAceitarItensDuplicados() {
-        assertThrows(IllegalArgumentException.class,
-                () -> criarSolicitacao(List.of(
-                        new SolicitacaoConsumoEstoque.ItemConsumo(
-                                inventoryItemId, 2
-                        ),
-                        new SolicitacaoConsumoEstoque.ItemConsumo(
-                                inventoryItemId, 3
-                        )
-                )));
+    void deveSomarItensDuplicados() {
+        var solicitacao = criarSolicitacao(List.of(
+                new SolicitacaoConsumoEstoque.ItemConsumo(inventoryItemId, 2),
+                new SolicitacaoConsumoEstoque.ItemConsumo(inventoryItemId, 3)));
+        assertEquals(List.of(new SolicitacaoConsumoEstoque.ItemConsumo(inventoryItemId, 5)), solicitacao.items());
+    }
+
+    @Test
+    void naoDeveAceitarEstouroDaSoma() {
+        assertThrows(IllegalArgumentException.class, () -> criarSolicitacao(List.of(
+                new SolicitacaoConsumoEstoque.ItemConsumo(inventoryItemId, Integer.MAX_VALUE),
+                new SolicitacaoConsumoEstoque.ItemConsumo(inventoryItemId, 1))));
     }
 
     @Test

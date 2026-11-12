@@ -1,0 +1,6 @@
+{
+  "contract": "2.0.0-os-baseline.1",
+  "realResponses": 6,
+  "valid": true,
+  "participants": "real OS + real Inventory + simulated Billing"
+}

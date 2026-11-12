@@ -1,0 +1,10 @@
+[INFO] --- spring-boot:4.1.2:repackage (repackage) @ inventory-service ---
+[INFO] Loaded 50 auto-discovered prefixes for remote repository ow2-snapshot (prefixes-ow2-snapshot.txt)
+[INFO] Replacing main artifact /workspace/target/inventory-service-0.0.1-SNAPSHOT.jar with repackaged archive, adding nested dependencies in BOOT-INF/.
+[INFO] The original artifact has been renamed to /workspace/target/inventory-service-0.0.1-SNAPSHOT.jar.original
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  8.449 s
+[INFO] Finished at: 2026-11-10T01:03:05Z
+[INFO] ------------------------------------------------------------------------

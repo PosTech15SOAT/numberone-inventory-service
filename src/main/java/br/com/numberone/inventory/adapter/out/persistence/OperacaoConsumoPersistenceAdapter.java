@@ -3,11 +3,12 @@ package br.com.numberone.inventory.adapter.out.persistence;
 
 import br.com.numberone.inventory.domain.model.OperacaoConsumoEstoque;
 import br.com.numberone.inventory.domain.model.StatusOperacaoConsumo;
-import br.com.numberone.inventory.domain.port.out.OperacaoConsumoRepositoryPort;
+import br.com.numberone.inventory.application.port.out.OperacaoConsumoRepositoryPort;
 
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.Objects;
 import java.util.UUID;
 
 @Repository
@@ -20,6 +21,11 @@ public class OperacaoConsumoPersistenceAdapter
             OperacaoConsumoJpaRepository repository) {
 
         this.repository = repository;
+    }
+
+    @Override
+    public void bloquearOperacao(UUID operationId) {
+        repository.bloquearOperacao(operationId);
     }
 
     @Override
@@ -43,34 +49,34 @@ public class OperacaoConsumoPersistenceAdapter
             OperacaoConsumoEstoque atual =
                     entity.toDomain();
 
-            if (!atual.possuiMesmoRequestHash(
-                    operacao.getRequestHash())) {
+            if (!(atual.getStatus() == StatusOperacaoConsumo.CLOSED && operacao.getRequestHash() == null)
+                    && !atual.possuiMesmoRequestHash(operacao.getRequestHash())) {
                 throw new IllegalStateException(
                         "operationId ja utilizado com dados diferentes."
                 );
             }
 
-            if (!atual.getServiceOrderId().equals(
+            if (!Objects.equals(atual.getServiceOrderId(),
                     operacao.getServiceOrderId())
-                    || !atual.getServiceOrderItemId().equals(
+                    || !Objects.equals(atual.getServiceOrderItemId(),
                     operacao.getServiceOrderItemId())
-                    || !atual.getResponsibleUserId().equals(
-                    operacao.getResponsibleUserId())) {
+                    || !Objects.equals(atual.getResponsibleUserId(), operacao.getResponsibleUserId())
+                    || atual.getCompensationId() != null && !atual.getCompensationId().equals(operacao.getCompensationId())) {
                 throw new IllegalStateException(
                         "Dados da operacao existente nao correspondem."
                 );
             }
 
             if (entity.getStatus() != operacao.getStatus()) {
-                entity.atualizarStatus(operacao.getStatus());
+                entity.atualizarStatus(operacao.getStatus(), operacao.getCompensationId());
             }
 
             return repository.save(entity).toDomain();
         }
 
-        if (operacao.getStatus() != StatusOperacaoConsumo.PROCESSING) {
+        if (operacao.getStatus() != StatusOperacaoConsumo.PROCESSING && operacao.getStatus() != StatusOperacaoConsumo.CLOSED) {
             throw new IllegalStateException(
-                    "Uma nova operacao deve iniciar em PROCESSING."
+                    "Uma nova operacao deve iniciar em PROCESSING ou CLOSED."
             );
         }
 

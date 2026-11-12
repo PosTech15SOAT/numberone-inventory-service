@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -15,6 +16,7 @@ public interface ItemEstoqueJpaRepository
         extends JpaRepository<ItemEstoqueEntity, UUID> {
 
     Optional<ItemEstoqueEntity> findByCodigo(String codigo);
+    List<ItemEstoqueEntity> findByAtivoTrueOrderByCodigo();
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("""

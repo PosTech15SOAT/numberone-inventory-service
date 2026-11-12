@@ -5,6 +5,8 @@ public enum StatusOperacaoConsumo {
 
     PROCESSING,
     CONSUMED,
-    INSUFFICIENT_STOCK
+    INSUFFICIENT_STOCK,
+    CLOSED,
+    REVERSED
 
 }

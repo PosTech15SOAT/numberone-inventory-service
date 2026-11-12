@@ -52,6 +52,12 @@ public class MovimentacaoEstoqueEntity {
     @Column(name = "operation_id")
     private UUID operationId;
 
+    @Column(name = "original_movement_id")
+    private UUID originalMovementId;
+
+    @Column(name = "compensation_id")
+    private UUID compensationId;
+
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
@@ -104,6 +110,13 @@ public class MovimentacaoEstoqueEntity {
     public UUID getId() {
         return id;
     }
+
+    public void vincularInverso(UUID originalId, UUID compensationId) {
+        this.originalMovementId = originalId;
+        this.compensationId = compensationId;
+    }
+
+    public UUID getOriginalMovementId() { return originalMovementId; }
 
     public UUID getOperationId() {
         return operationId;
