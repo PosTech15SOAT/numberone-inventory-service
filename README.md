@@ -41,3 +41,8 @@ Para executar a suíte completa, configure um PostgreSQL de testes disponível e
 ## Aplicar esta atualização
 
 Copie `src/` e `README.md` para a branch de trabalho, **removendo antes o diretório antigo** `src/main/java/br/com/numberone/inventory/domain/port/out` para não manter interfaces duplicadas. Preserve `.git` e suas configurações locais. Execute `git status` e `./mvnw.cmd clean test` antes do commit.
+
+## Documentação das entregas FIAP
+
+- [Entrega I1 — roteiro local e evidências](doc/i1.md)
+- [Entrega I2 — compensação, testes PostgreSQL e integração real](doc/i2.md)
