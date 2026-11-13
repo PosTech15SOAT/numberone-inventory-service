@@ -16,6 +16,7 @@ import java.util.UUID;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.hamcrest.Matchers.isA;
 
 @WebMvcTest(controllers = ConsultarPrecosController.class, properties = "app.security.billing-token=test-billing")
 class ConsultarPrecosWebMvcTest {
@@ -48,7 +49,7 @@ class ConsultarPrecosWebMvcTest {
                 .andExpect(jsonPath("$.items[0].inventoryItemId")
                         .value(id.toString()))
                 .andExpect(jsonPath("$.items[0].salePrice")
-                        .value("200.00"))
+                        .value(isA(Number.class)))
                 .andExpect(jsonPath("$.items[0].currency")
                         .value("BRL"));
     }

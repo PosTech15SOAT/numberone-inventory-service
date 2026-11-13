@@ -42,7 +42,10 @@ Para executar a suíte completa, configure um PostgreSQL de testes disponível e
 
 Copie `src/` e `README.md` para a branch de trabalho, **removendo antes o diretório antigo** `src/main/java/br/com/numberone/inventory/domain/port/out` para não manter interfaces duplicadas. Preserve `.git` e suas configurações locais. Execute `git status` e `./mvnw.cmd clean test` antes do commit.
 
-## Documentação das entregas FIAP
+## Contrato REST de preços para Billing
 
-- [Entrega I1 — roteiro local e evidências](doc/i1.md)
-- [Entrega I2 — compensação, testes PostgreSQL e integração real](doc/i2.md)
+`POST /internal/inventory/consultar-precos` recebe `{"inventoryItemIds":["<uuid>"]}` e retorna `{"items":[{"inventoryItemId":"<uuid>","salePrice":125.50,"currency":"BRL"}]}`. O campo `salePrice` é um **número JSON**, com duas casas decimais, em BRL.
+
+A consulta não altera nem reserva estoque. IDs repetidos são consultados uma única vez. Se qualquer insumo estiver ausente ou sem preço válido, a API **não retorna preços parciais**: responde HTTP `404` com `code` (`INVENTORY_ITEMS_NOT_FOUND` ou `INVENTORY_ITEM_WITHOUT_PRICE`), `message` e `inventoryItemIds` afetados. Entrada inválida retorna HTTP `400`.
+
+O Billing deve enviar `Authorization: Bearer <token interno de Billing>` e `X-Correlation-Id: <uuid>`, conforme o filtro de acesso interno. O token deve ser configurado de forma segura no ambiente de execução.

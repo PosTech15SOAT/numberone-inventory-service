@@ -36,7 +36,7 @@ public class ConsultarPrecosController {
                         .stream()
                         .map(preco -> new ConsultarPrecosResponse.ItemPreco(
                                 preco.inventoryItemId(),
-                                preco.salePrice().toPlainString(),
+                                preco.salePrice(),
                                 preco.currency()
                         ))
                         .toList();
@@ -55,7 +55,7 @@ public class ConsultarPrecosController {
     ) {
         public record ItemPreco(
                 UUID inventoryItemId,
-                String salePrice,
+                BigDecimal salePrice,
                 String currency
         ) {
         }

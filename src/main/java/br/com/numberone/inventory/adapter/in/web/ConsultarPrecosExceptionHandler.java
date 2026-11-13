@@ -20,7 +20,7 @@ public class ConsultarPrecosExceptionHandler {
             ConsultaPrecosException exception) {
 
         return ResponseEntity
-                .status(HttpStatus.UNPROCESSABLE_ENTITY)
+                .status(HttpStatus.NOT_FOUND)
                 .body(new ErroResponse(
                         exception.getCodigo(),
                         "Não foi possível consultar os preços de todos os itens.",
