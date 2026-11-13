@@ -2,6 +2,8 @@
 
 Microsserviço de estoque (Java 21, Spring Boot 4.1.2, PostgreSQL 17, Flyway).
 
+Veja [Docker, Kubernetes e CI/CD](k8s/README.md) para construir a imagem e preparar o deploy de homologação.
+
 ## Organização em Clean Architecture
 
 ```text
