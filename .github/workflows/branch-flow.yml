@@ -1,0 +1,23 @@
+name: Branch flow validation
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate-source:
+    name: Validate promotion source
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require develop as source branch
+        env:
+          SOURCE_BRANCH: ${{ github.head_ref }}
+          SOURCE_REPO: ${{ github.event.pull_request.head.repo.full_name }}
+        run: |
+          if [[ "$SOURCE_BRANCH" != "develop" || "$SOURCE_REPO" != "$GITHUB_REPOSITORY" ]]; then
+            echo "::error::A promoção para main deve vir de develop neste repositório."
+            exit 1
+          fi
