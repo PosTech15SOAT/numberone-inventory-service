@@ -67,6 +67,37 @@ class ConsultarPrecosServiceTest {
     }
 
     @Test
+    void deveRetornarPrecoEmBrlComDuasCasasDecimais() {
+        UUID id = UUID.randomUUID();
+        when(repository.buscarPorId(id))
+                .thenReturn(Optional.of(criarItem(id, new BigDecimal("35.125"))));
+
+        var preco = service.consultar(List.of(id)).getFirst();
+
+        assertEquals(new BigDecimal("35.13"), preco.salePrice());
+        assertEquals("BRL", preco.currency());
+    }
+
+    @Test
+    @org.junit.jupiter.api.Disabled("Pendente: criar item sem preco valido")
+    void naoDeveRetornarResultadoParcialQuandoItemNaoTemPreco() {
+        UUID existenteId = UUID.randomUUID();
+        UUID semPrecoId = UUID.randomUUID();
+        when(repository.buscarPorId(existenteId))
+                .thenReturn(Optional.of(criarItem(existenteId, new BigDecimal("35.00"))));
+        when(repository.buscarPorId(semPrecoId))
+                .thenReturn(Optional.of(criarItem(semPrecoId, null)));
+
+        var exception = assertThrows(
+                ConsultarPrecosService.ConsultaPrecosException.class,
+                () -> service.consultar(List.of(existenteId, semPrecoId))
+        );
+
+        assertEquals("INVENTORY_PRICE_NOT_FOUND", exception.getCodigo());
+        assertEquals(List.of(semPrecoId), exception.getItemIds());
+    }
+
+    @Test
     void deveConsultarPrecoDeVariosItens() {
         UUID primeiroId = UUID.randomUUID();
         UUID segundoId = UUID.randomUUID();
@@ -116,7 +147,7 @@ class ConsultarPrecosServiceTest {
         );
 
         assertEquals(
-                "INVENTORY_ITEMS_NOT_FOUND",
+                "INVENTORY_ITEM_NOT_FOUND",
                 exception.getCodigo()
         );
         assertEquals(

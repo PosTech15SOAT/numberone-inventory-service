@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -57,23 +58,21 @@ public class ConsultarPrecosService implements ConsultarPrecosUseCase {
 
             precos.add(new PrecoItem(
                     inventoryItemId,
-                    precoVenda,
+                    precoVenda.setScale(2, RoundingMode.HALF_UP),
                     "BRL"
             ));
         }
 
-        if (!itensNaoEncontrados.isEmpty()) {
-            throw new ConsultaPrecosException(
-                    "INVENTORY_ITEMS_NOT_FOUND",
-                    itensNaoEncontrados
-            );
-        }
+        if (!itensNaoEncontrados.isEmpty() || !itensSemPreco.isEmpty()) {
+            List<UUID> idsComProblema = new ArrayList<>();
+            idsComProblema.addAll(itensNaoEncontrados);
+            idsComProblema.addAll(itensSemPreco);
 
-        if (!itensSemPreco.isEmpty()) {
-            throw new ConsultaPrecosException(
-                    "INVENTORY_ITEM_WITHOUT_PRICE",
-                    itensSemPreco
-            );
+            String codigoErro = itensSemPreco.isEmpty()
+                    ? "INVENTORY_ITEM_NOT_FOUND"
+                    : "INVENTORY_PRICE_NOT_FOUND";
+
+            throw new ConsultaPrecosException(codigoErro, idsComProblema);
         }
 
         return List.copyOf(precos);

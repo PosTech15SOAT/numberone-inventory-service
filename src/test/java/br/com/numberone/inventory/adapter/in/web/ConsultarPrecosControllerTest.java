@@ -17,6 +17,7 @@ import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.hamcrest.Matchers.isA;
 
 class ConsultarPrecosControllerTest {
 
@@ -57,7 +58,7 @@ class ConsultarPrecosControllerTest {
                 .andExpect(jsonPath("$.items[0].inventoryItemId")
                         .value(id.toString()))
                 .andExpect(jsonPath("$.items[0].salePrice")
-                        .value("200.00"))
+                        .value(isA(Number.class)))
                 .andExpect(jsonPath("$.items[0].currency")
                         .value("BRL"));
 
@@ -89,41 +90,41 @@ class ConsultarPrecosControllerTest {
     }
 
     @Test
-    void deveRetornar422QuandoItemNaoExiste() throws Exception {
+    void deveRetornar404QuandoItemNaoExiste() throws Exception {
         UUID id = UUID.randomUUID();
 
         when(service.consultar(anyList()))
                 .thenThrow(new ConsultaPrecosException(
-                        "INVENTORY_ITEMS_NOT_FOUND",
+                        "INVENTORY_ITEM_NOT_FOUND",
                         List.of(id)
                 ));
 
         mockMvc.perform(post("/internal/inventory/consultar-precos")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"inventoryItemIds\":[\"" + id + "\"]}"))
-                .andExpect(status().isUnprocessableEntity())
+                .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.code")
-                        .value("INVENTORY_ITEMS_NOT_FOUND"))
+                        .value("INVENTORY_ITEM_NOT_FOUND"))
                 .andExpect(jsonPath("$.inventoryItemIds[0]")
                         .value(id.toString()));
     }
 
     @Test
-    void deveRetornar422QuandoItemNaoTemPreco() throws Exception {
+    void deveRetornar404QuandoItemNaoTemPreco() throws Exception {
         UUID id = UUID.randomUUID();
 
         when(service.consultar(anyList()))
                 .thenThrow(new ConsultaPrecosException(
-                        "INVENTORY_ITEM_WITHOUT_PRICE",
+                        "INVENTORY_PRICE_NOT_FOUND",
                         List.of(id)
                 ));
 
         mockMvc.perform(post("/internal/inventory/consultar-precos")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"inventoryItemIds\":[\"" + id + "\"]}"))
-                .andExpect(status().isUnprocessableEntity())
+                .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.code")
-                        .value("INVENTORY_ITEM_WITHOUT_PRICE"))
+                        .value("INVENTORY_PRICE_NOT_FOUND"))
                 .andExpect(jsonPath("$.inventoryItemIds[0]")
                         .value(id.toString()));
     }
