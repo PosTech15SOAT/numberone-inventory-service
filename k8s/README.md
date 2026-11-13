@@ -23,7 +23,7 @@ O workflow manual usa o environment `homologation`, aceita `main` e executa o CI
 | Variável do environment | Valor esperado |
 | --- | --- |
 | `AWS_REGION`, `AWS_ACCOUNT_ID`, `EKS_CLUSTER_NAME` | Região, conta e nome do cluster fornecidos pela plataforma |
-| `ECR_REPOSITORY` | `numberone-inventory-service` |
+| `ECR_REPOSITORY` | `numberone-inventory` |
 | `K8S_NAMESPACE` | Namespace provisionado para a aplicação |
 | `DB_IDENTIFIER`, `DB_SECRET_ARN` | Instância RDS PostgreSQL e ARN do Secret com `username` e `password` |
 | `DB_APP_USERNAME` | Usuário exclusivo da aplicação, diferente do master |
