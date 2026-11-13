@@ -22,8 +22,7 @@ import static org.assertj.core.api.Assertions.*;
 
 /** Requires a disposable, real PostgreSQL database. No mocked persistence or inventory participant. */
 @EnabledIfEnvironmentVariable(named = "I2_POSTGRES_TEST", matches = "true")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {
-        "app.security.os-token=i2-os", "app.security.billing-token=i2-billing"})
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class InventoryI2PostgresTest {
     @Autowired ConsumirEstoqueService consume;
     @Autowired CompensarEstoqueService reverse;
@@ -59,7 +58,7 @@ class InventoryI2PostgresTest {
     }
     private JsonNode call(int status, String method, String path, Object body, UUID key) throws Exception {
         var req = HttpRequest.newBuilder(URI.create("http://127.0.0.1:" + port + "/internal/inventory/" + path))
-                .timeout(Duration.ofSeconds(15)).header("Authorization", "Bearer i2-os")
+                .timeout(Duration.ofSeconds(15))
                 .header("X-Correlation-Id", correlation.toString()).header("Content-Type", "application/json");
         if (key != null) { req.header("Idempotency-Key", key.toString()); }
         var res = http.send(req.method(method, body == null ? HttpRequest.BodyPublishers.noBody()
@@ -225,17 +224,40 @@ class InventoryI2PostgresTest {
         catch (ConflitoCompensacaoException ex) { return ex.getMessage(); }
     }
 
-    @Test void reversalRequiresOsIdentityAndUuidCorrelation() throws Exception {
+    @Test void consumptionReplayConflictShortageAndReversalWithoutCredentials() throws Exception {
+        UUID item = material(2);
+        var request = consumption(item);
+        var original = call(200, "POST", "consumptions", request, request.operationId());
+        assertThat(original.path("result").asString()).isEqualTo("CONSUMED");
+        assertThat(call(200, "POST", "consumptions", request, request.operationId())).isEqualTo(original);
+        var changed = new SolicitacaoConsumoEstoque(request.operationId(), request.serviceOrderId(),
+                request.serviceOrderItemId(), request.responsibleUserId(),
+                List.of(new SolicitacaoConsumoEstoque.ItemConsumo(item, 2)));
+        assertThat(call(409, "POST", "consumptions", changed, request.operationId()).path("code").asString())
+                .isEqualTo("IDEMPOTENCY_CONFLICT");
+        assertThat(balance(item)).isEqualTo(1);
+        var shortage = new SolicitacaoConsumoEstoque(UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID(),
+                UUID.randomUUID(), List.of(new SolicitacaoConsumoEstoque.ItemConsumo(item, 2)));
+        assertThat(call(409, "POST", "consumptions", shortage, shortage.operationId()).path("code").asString())
+                .isEqualTo("INSUFFICIENT_STOCK");
+        var compensation = reversal();
+        var returned = reverseHttp(200, request.operationId(), compensation);
+        assertThat(returned.path("result").asString()).isEqualTo("REVERSED");
+        assertThat(reverseHttp(200, request.operationId(), compensation)).isEqualTo(returned);
+        assertThat(balance(item)).isEqualTo(2);
+    }
+
+    @Test void reversalRequiresUuidCorrelation() throws Exception {
         UUID id = UUID.randomUUID(); var req = reversal();
-        for (String token : List.of("i2-billing", "wrong", "i2-os")) {
+        for (String correlationValue : List.of("invalid", "")) {
             var request = HttpRequest.newBuilder(URI.create("http://127.0.0.1:" + port
                     + "/internal/inventory/consumptions/" + id + "/reversal"))
-                    .header("Authorization", "Bearer " + token).header("Content-Type", "application/json")
+                    .header("Content-Type", "application/json")
                     .header("Idempotency-Key", req.compensationId().toString());
-            if (!token.equals("i2-os")) { request.header("X-Correlation-Id", correlation.toString()); }
+            if (!correlationValue.isEmpty()) { request.header("X-Correlation-Id", correlationValue); }
             var reply = http.send(request.POST(HttpRequest.BodyPublishers.ofString(json.writeValueAsString(req))).build(),
                     HttpResponse.BodyHandlers.ofString());
-            assertThat(reply.statusCode()).isEqualTo(token.equals("i2-billing") ? 403 : token.equals("wrong") ? 401 : 400);
+            assertThat(reply.statusCode()).isEqualTo(400);
         }
         assertThat(count("operacao_consumo_estoque", id)).isZero();
     }

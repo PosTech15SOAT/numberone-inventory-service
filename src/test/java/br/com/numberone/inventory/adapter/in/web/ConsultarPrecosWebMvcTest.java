@@ -18,7 +18,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.hamcrest.Matchers.isA;
 
-@WebMvcTest(controllers = ConsultarPrecosController.class, properties = "app.security.billing-token=test-billing")
+@WebMvcTest(controllers = ConsultarPrecosController.class)
 class ConsultarPrecosWebMvcTest {
 
     @Autowired
@@ -41,7 +41,6 @@ class ConsultarPrecosWebMvcTest {
                 ));
 
         mockMvc.perform(post("/internal/inventory/consultar-precos")
-                        .header("Authorization", "Bearer test-billing")
                         .header("X-Correlation-Id", UUID.randomUUID().toString())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"inventoryItemIds\":[\"" + id + "\"]}"))
@@ -57,7 +56,6 @@ class ConsultarPrecosWebMvcTest {
     @Test
     void deveRetornar400ParaListaVazia() throws Exception {
         mockMvc.perform(post("/internal/inventory/consultar-precos")
-                        .header("Authorization", "Bearer test-billing")
                         .header("X-Correlation-Id", UUID.randomUUID().toString())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"inventoryItemIds\":[]}"))
@@ -65,6 +63,17 @@ class ConsultarPrecosWebMvcTest {
                 .andExpect(jsonPath("$.code")
                         .value("INVALID_REQUEST"));
 
+        verifyNoInteractions(consultarPrecosService);
+    }
+    @Test
+    void deveRejeitarCorrelacaoInvalida() throws Exception {
+        mockMvc.perform(post("/internal/inventory/consultar-precos")
+                        .header("X-Correlation-Id", "invalido")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"inventoryItemIds\":[]}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("INVALID_REQUEST"))
+                .andExpect(header().exists("X-Correlation-Id"));
         verifyNoInteractions(consultarPrecosService);
     }
 }
