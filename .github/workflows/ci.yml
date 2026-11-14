@@ -1,0 +1,90 @@
+name: Integração contínua
+
+on:
+  workflow_call:
+    inputs:
+      upload_jar:
+        type: boolean
+        default: false
+  push:
+    branches: [main, develop, 'feature/**', 'codex/**']
+  pull_request:
+    branches: [main, develop]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name != 'workflow_dispatch' }}
+
+jobs:
+  test-and-build:
+    name: Validação obrigatória
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: inventory_db
+          POSTGRES_USER: inventory_ci
+          POSTGRES_PASSWORD: ci-disposable-only
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U inventory_ci -d inventory_db"
+          --health-interval 5s --health-timeout 5s --health-retries 20
+    env:
+      DB_URL: jdbc:postgresql://127.0.0.1:5432/inventory_db
+      DB_USERNAME: inventory_ci
+      DB_PASSWORD: ci-disposable-only
+      I2_POSTGRES_TEST: 'true'
+    steps:
+      - name: Obter código do repositório
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Configurar Java e cache Maven
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      - name: Executar testes unitários e PostgreSQL descartável
+        run: |
+          chmod +x mvnw
+          ./mvnw --batch-mode clean verify
+      - name: Construir imagem do JAR validado
+        run: docker build --target verified -t numberone-inventory-service:${{ github.sha }} .
+      - name: Configurar kubectl
+        uses: azure/setup-kubectl@v4
+        with:
+          version: v1.36.2
+      - name: Renderizar e validar manifests
+        env:
+          K8S_NAMESPACE: numberone-inventory
+          IMAGE_URI: registry.example.invalid/numberone-inventory@sha256:0000000000000000000000000000000000000000000000000000000000000000
+        run: |
+          mkdir -p rendered-manifests
+          bash scripts/render-kubernetes.sh > rendered-manifests/homologation.yaml
+          docker run --rm -v "$PWD:/workspace:ro" ghcr.io/yannh/kubeconform:v0.8.0 \
+            -strict -summary -kubernetes-version 1.36.0 /workspace/rendered-manifests
+      - name: Disponibilizar JAR validado para deploy
+        if: inputs.upload_jar
+        uses: actions/upload-artifact@v7
+        with:
+          name: inventory-application-${{ github.sha }}
+          path: target/inventory-service-*.jar
+          if-no-files-found: error
+          retention-days: 1
+      - name: Publicar relatórios
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: inventory-validation-reports
+          path: |
+            target/surefire-reports
+            target/failsafe-reports
+            target/site
+            rendered-manifests
+          if-no-files-found: warn

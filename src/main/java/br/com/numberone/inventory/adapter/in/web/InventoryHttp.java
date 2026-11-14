@@ -7,7 +7,7 @@ import java.util.UUID;
 
 final class InventoryHttp {
     static final String CORRELATION = "X-Correlation-Id";
-    static final String ADMIN_SUBJECT = "inventory.adminSubject";
+    static final String AUTHOR = "X-Authenticated-Subject";
     static final String REQUEST_CORRELATION = "inventory.correlationId";
 
     private InventoryHttp() { }

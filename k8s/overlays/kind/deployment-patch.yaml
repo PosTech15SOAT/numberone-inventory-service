@@ -1,0 +1,16 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: numberone-inventory
+spec:
+  template:
+    spec:
+      containers:
+        - name: inventory
+          imagePullPolicy: Never
+          env:
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: INVENTORY_PASSWORD

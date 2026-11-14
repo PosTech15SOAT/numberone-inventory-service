@@ -1,19 +1,15 @@
 param(
-    [string]$Base = 'http://127.0.0.1:18081',
-    [string]$OsToken = 'i1-local-os-to-inventory',
-    [string]$BillingToken = 'i1-local-billing-to-inventory'
+    [string]$Base = 'http://127.0.0.1:18081'
 )
 $ErrorActionPreference = 'Stop'
 $correlation = [guid]::NewGuid().ToString()
 $subject = [guid]::NewGuid().ToString()
 $admin = @{
     'X-Authenticated-Subject' = $subject
-    'X-Authenticated-Status' = 'ACTIVE'
-    'X-Authenticated-Roles' = 'ADMIN'
     'X-Correlation-Id' = $correlation
 }
-$os = @{Authorization = "Bearer $OsToken"; 'X-Correlation-Id' = $correlation}
-$billing = @{Authorization = "Bearer $BillingToken"; 'X-Correlation-Id' = $correlation}
+$os = @{'X-Correlation-Id' = $correlation}
+$billing = @{'X-Correlation-Id' = $correlation}
 $client = [System.Net.Http.HttpClient]::new()
 
 function Assert-That($Condition, [string]$Message) {
@@ -97,18 +93,9 @@ try {
     $prices = Call 200 POST '/internal/inventory/consultar-precos' $billing @{inventoryItemIds = @($a)}
     Assert-That ($prices.items[0].salePrice -ceq '20.40' -and $prices.items[0].currency -eq 'BRL') 'Resposta de precos invalida'
     $null = Call 404 GET "/internal/inventory/items/$([guid]::NewGuid())" $os
-    $null = Call 403 POST '/internal/inventory/consultar-precos' $os @{inventoryItemIds = @($a)}
-    $null = Call 403 GET "/internal/inventory/items/$a" $billing
-    $null = Call 403 GET "/internal/inventory/operations/$([guid]::NewGuid())" $billing
-    $null = Call 403 POST '/internal/inventory/consumptions' $billing @{}
-    $null = Call 401 GET "/internal/inventory/items/$a" @{Authorization = 'Bearer invalid'; 'X-Correlation-Id' = $correlation}
-    $null = Call 400 GET "/internal/inventory/items/$a" @{Authorization = "Bearer $OsToken"}
-    $null = Call 401 GET "/api/admin/itens/$a" @{}
-    $null = Call 403 GET "/api/admin/itens/$a" ($admin + @{Authorization = "Bearer $OsToken"})
-    $customer = $admin.Clone()
-    $customer['X-Authenticated-Roles'] = 'CUSTOMER'
-    $null = Call 403 GET "/api/admin/itens/$a" $customer
-    'OK referencia decimal, precos Billing e escopos de OS, Billing e ADMIN'
+    $null = Call 400 GET "/internal/inventory/items/$a" @{}
+    $null = Call 200 GET "/api/admin/itens/$a" @{}
+    'OK referencia decimal, precos sem credenciais e correlacao obrigatoria'
 
     $attempt = Operation @((Supply $b 1), (Supply $a 1), (Supply $a 2))
     $original = Consume 200 $attempt

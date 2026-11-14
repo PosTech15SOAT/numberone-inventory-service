@@ -47,7 +47,7 @@ class InventoryExceptionHandler {
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     ResponseEntity<InventoryHttp.Problem> integridade(HttpServletRequest request) {
-        if (request.getAttribute(InventoryHttp.ADMIN_SUBJECT) != null) {
+        if (request.getRequestURI().substring(request.getContextPath().length()).startsWith("/api/admin/")) {
             return problem(request, 409, "PERSISTENCE_CONFLICT", "Dados em conflito com o cadastro.", null);
         }
         return indisponivel(request);

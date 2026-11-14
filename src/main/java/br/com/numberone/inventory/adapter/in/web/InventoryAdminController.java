@@ -29,8 +29,8 @@ class InventoryAdminController {
 
     @PostMapping("/itens")
     ResponseEntity<ItemEstoque> cadastrar(@Valid @RequestBody Cadastro body,
-                                          @RequestAttribute(InventoryHttp.ADMIN_SUBJECT) UUID autor) {
-        var item = catalogo.cadastrar(body.toDomain(), InventoryHttp.quantidade(body.quantidadeEstoque()), autor);
+                                          @RequestHeader(InventoryHttp.AUTHOR) String autor) {
+        var item = catalogo.cadastrar(body.toDomain(), InventoryHttp.quantidade(body.quantidadeEstoque()), InventoryHttp.uuid(autor));
         var location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(item.getId()).toUri();
         return ResponseEntity.created(location).body(item);
@@ -48,9 +48,9 @@ class InventoryAdminController {
 
     @PostMapping("/estoque/entrada")
     ResponseEntity<Movimento> entrada(@Valid @RequestBody Entrada body,
-                                      @RequestAttribute(InventoryHttp.ADMIN_SUBJECT) UUID autor) {
+                                      @RequestHeader(InventoryHttp.AUTHOR) String autor) {
         var movimento = catalogo.entrada(body.idItemEstoque(), InventoryHttp.quantidade(body.quantidade()),
-                body.origemMovimentacao(), body.referenciaOrigemId(), body.observacao(), autor);
+                body.origemMovimentacao(), body.referenciaOrigemId(), body.observacao(), InventoryHttp.uuid(autor));
         return ResponseEntity.status(201).body(Movimento.from(movimento));
     }
 
