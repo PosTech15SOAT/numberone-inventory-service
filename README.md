@@ -1,5 +1,7 @@
 # NumberOne Inventory Service
 
+[Arquitetura e entregáveis da Fase 4](doc/arquitetura-fase-4.md) · [Collection Postman](doc/api/numberone-inventory.postman_collection.json) · [CI e evidência de cobertura](https://github.com/PosTech15SOAT/numberone-inventory-service/actions/runs/43352559150)
+
 Microsserviço de estoque (Java 21, Spring Boot 4.1.2, PostgreSQL 17, Flyway).
 
 ## Organização em Clean Architecture
@@ -38,9 +40,9 @@ Para executar a suíte completa, configure um PostgreSQL de testes disponível e
 
 **Importante:** a refatoração estrutural não substitui a execução real de Maven, Flyway e testes de integração. A criação de RDS no Learner Lab pode ser bloqueada por IAM.
 
-## Aplicar esta atualização
+## Docker e Kubernetes
 
-Copie `src/` e `README.md` para a branch de trabalho, **removendo antes o diretório antigo** `src/main/java/br/com/numberone/inventory/domain/port/out` para não manter interfaces duplicadas. Preserve `.git` e suas configurações locais. Execute `git status` e `./mvnw.cmd clean test` antes do commit.
+O [PR do Item 2](https://github.com/PosTech15SOAT/numberone-inventory-service/pull/5) reúne Dockerfile, manifests, CI/CD e gate JaCoCo. Para o aceite, confirme a revisão promovida e use PostgreSQL descartável com `I2_POSTGRES_TEST=true`.
 
 ## Contrato REST de preços para Billing
 
