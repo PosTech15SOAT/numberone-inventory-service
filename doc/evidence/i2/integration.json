@@ -1,0 +1,269 @@
+{
+  "rejected" : {
+    "operationId" : "c42e3e13-a8d1-4803-a385-8d8be4d777a0",
+    "result" : "REJECTED",
+    "code" : "INSUFFICIENT_STOCK",
+    "movements" : [ ]
+  },
+  "billingCalls" : 1,
+  "closed" : {
+    "operationId" : "808e5ce9-dd37-4feb-afe3-bfbe28a44c5a",
+    "result" : "CLOSED",
+    "movements" : [ ],
+    "compensationId" : "cb5a568f-84ae-4aa8-b0e4-8cb63e22929a"
+  },
+  "order" : "7861cb85-b7bf-4166-bfac-7c23a3b813da",
+  "balances" : [ 5, 4, 5, 5 ],
+  "originalMovements" : [ "1456e8e4-b47e-47bd-9416-f7152eaeaea2" ],
+  "osStatus" : {
+    "serviceOrderId" : "7861cb85-b7bf-4166-bfac-7c23a3b813da",
+    "state" : "COMPENSATED",
+    "reason" : null,
+    "returnState" : "START_PENDING",
+    "cancellation" : {
+      "author" : "23a702a1-f62a-4926-be90-35a593a0a7c8",
+      "request" : {
+        "scope" : "FULL",
+        "reason" : "Cancelamento sintetico I2",
+        "verifiedAt" : "2026-11-10T01:04:14.054371395Z",
+        "returnConfirmed" : true,
+        "unusedConfirmed" : true,
+        "evidenceReference" : "I2: material conferido e devolvido antes do uso",
+        "physicallyRemoved" : true
+      },
+      "automatic" : true,
+      "acceptedAt" : "2026-11-10T01:04:14.077174570Z",
+      "composition" : {
+        "items" : [ {
+          "optional" : false,
+          "quantity" : 1,
+          "supplies" : [ {
+            "quantity" : 1,
+            "inventoryItemId" : "2b48e44b-77b3-4bd2-b433-a6a393fce977"
+          } ],
+          "serviceAmount" : "150.00",
+          "serviceOrderItemId" : "18bafdc7-df68-47b9-810c-e55c6445ef0a",
+          "automotiveServiceId" : "95862f8f-dd59-42a1-b5f5-22cf490623e6"
+        }, {
+          "optional" : false,
+          "quantity" : 1,
+          "supplies" : [ {
+            "quantity" : 1,
+            "inventoryItemId" : "e0aee51f-8dcb-404d-ab48-7153f4142512"
+          } ],
+          "serviceAmount" : "150.00",
+          "serviceOrderItemId" : "36363425-c402-4601-9ee4-e8b82f3ffb95",
+          "automotiveServiceId" : "95862f8f-dd59-42a1-b5f5-22cf490623e6"
+        }, {
+          "optional" : false,
+          "quantity" : 1,
+          "supplies" : [ {
+            "quantity" : 1,
+            "inventoryItemId" : "2b48e44b-77b3-4bd2-b433-a6a393fce977"
+          } ],
+          "serviceAmount" : "150.00",
+          "serviceOrderItemId" : "ff90da9b-43e3-4869-a47a-9ae5df8ad1c5",
+          "automotiveServiceId" : "95862f8f-dd59-42a1-b5f5-22cf490623e6"
+        } ],
+        "version" : 8,
+        "serviceOrderId" : "7861cb85-b7bf-4166-bfac-7c23a3b813da"
+      },
+      "correlationId" : "e8983b2e-a803-451a-8004-7a9b6c0f5ad6"
+    },
+    "reviewDecisions" : [ ],
+    "operations" : [ {
+      "operation_id" : "c42e3e13-a8d1-4803-a385-8d8be4d777a0",
+      "original_operation_id" : null,
+      "budget_id" : null,
+      "budget_revision" : 1,
+      "intent" : "START_ITEM",
+      "state" : "REJECTED",
+      "attempts" : 1,
+      "next_attempt_at" : "2026-11-10T01:04:18.673Z",
+      "reason" : "CANCELLATION_STOCK_RESOLVED",
+      "result" : {
+        "code" : "INSUFFICIENT_STOCK",
+        "result" : "REJECTED",
+        "movements" : [ ],
+        "operationId" : "c42e3e13-a8d1-4803-a385-8d8be4d777a0"
+      },
+      "late_result" : null
+    }, {
+      "operation_id" : "808e5ce9-dd37-4feb-afe3-bfbe28a44c5a",
+      "original_operation_id" : null,
+      "budget_id" : null,
+      "budget_revision" : 1,
+      "intent" : "START_ITEM",
+      "state" : "SKIPPED",
+      "attempts" : 1,
+      "next_attempt_at" : "2026-11-10T01:04:18.804Z",
+      "reason" : "CANCELLATION_STOCK_RESOLVED",
+      "result" : null,
+      "late_result" : null
+    }, {
+      "operation_id" : "8c46b12d-77d8-4528-9330-8c09d26f3611",
+      "original_operation_id" : null,
+      "budget_id" : null,
+      "budget_revision" : 1,
+      "intent" : "START_ITEM",
+      "state" : "SKIPPED",
+      "attempts" : 1,
+      "next_attempt_at" : "2026-11-10T01:04:18.944Z",
+      "reason" : "CANCELLATION_STOCK_RESOLVED",
+      "result" : null,
+      "late_result" : null
+    }, {
+      "operation_id" : "023d84ab-a56e-4f6e-acf8-4c523d126dbc",
+      "original_operation_id" : "c42e3e13-a8d1-4803-a385-8d8be4d777a0",
+      "budget_id" : null,
+      "budget_revision" : null,
+      "intent" : "RESOLVE_STOCK",
+      "state" : "SUCCEEDED",
+      "attempts" : 1,
+      "next_attempt_at" : "2026-11-10T01:04:14.063Z",
+      "reason" : null,
+      "result" : {
+        "code" : "INSUFFICIENT_STOCK",
+        "result" : "REJECTED",
+        "movements" : [ ],
+        "operationId" : "c42e3e13-a8d1-4803-a385-8d8be4d777a0",
+        "compensationId" : null
+      },
+      "late_result" : null
+    }, {
+      "operation_id" : "af125a86-dfaa-484c-b7a1-d1fdb6b6fa7c",
+      "original_operation_id" : "8c46b12d-77d8-4528-9330-8c09d26f3611",
+      "budget_id" : null,
+      "budget_revision" : null,
+      "intent" : "RESOLVE_STOCK",
+      "state" : "SUCCEEDED",
+      "attempts" : 2,
+      "next_attempt_at" : "2026-11-10T01:04:19.275Z",
+      "reason" : null,
+      "result" : {
+        "code" : null,
+        "result" : "REVERSED",
+        "movements" : [ "11cde000-f62b-431d-8a83-e95a4ede8eda" ],
+        "operationId" : "8c46b12d-77d8-4528-9330-8c09d26f3611",
+        "compensationId" : "af125a86-dfaa-484c-b7a1-d1fdb6b6fa7c"
+      },
+      "late_result" : null
+    }, {
+      "operation_id" : "cb5a568f-84ae-4aa8-b0e4-8cb63e22929a",
+      "original_operation_id" : "808e5ce9-dd37-4feb-afe3-bfbe28a44c5a",
+      "budget_id" : null,
+      "budget_revision" : null,
+      "intent" : "RESOLVE_STOCK",
+      "state" : "SUCCEEDED",
+      "attempts" : 2,
+      "next_attempt_at" : "2026-11-10T01:04:19.405Z",
+      "reason" : null,
+      "result" : {
+        "code" : null,
+        "result" : "CLOSED",
+        "movements" : [ ],
+        "operationId" : "808e5ce9-dd37-4feb-afe3-bfbe28a44c5a",
+        "compensationId" : "cb5a568f-84ae-4aa8-b0e4-8cb63e22929a"
+      },
+      "late_result" : null
+    }, {
+      "operation_id" : "3b5dbb46-5860-43c9-990a-f013803a2662",
+      "original_operation_id" : null,
+      "budget_id" : "1c2e5923-d3d5-48e0-b09d-d22ec4851a01",
+      "budget_revision" : 1,
+      "intent" : "CANCEL_BUDGET",
+      "state" : "SUCCEEDED",
+      "attempts" : 1,
+      "next_attempt_at" : "2026-11-10T01:04:14.532Z",
+      "reason" : null,
+      "result" : {
+        "result" : "CANCELLED",
+        "budgetId" : "1c2e5923-d3d5-48e0-b09d-d22ec4851a01",
+        "operationId" : "3b5dbb46-5860-43c9-990a-f013803a2662",
+        "budgetVersion" : 1,
+        "serviceOrderId" : null
+      },
+      "late_result" : null
+    } ]
+  },
+  "httpTrace" : [ {
+    "method" : "GET",
+    "path" : "/internal/inventory/items/e0aee51f-8dcb-404d-ab48-7153f4142512",
+    "key" : null,
+    "correlation" : "e8983b2e-a803-451a-8004-7a9b6c0f5ad6",
+    "status" : 200
+  }, {
+    "method" : "GET",
+    "path" : "/internal/inventory/items/2b48e44b-77b3-4bd2-b433-a6a393fce977",
+    "key" : null,
+    "correlation" : "e8983b2e-a803-451a-8004-7a9b6c0f5ad6",
+    "status" : 200
+  }, {
+    "method" : "GET",
+    "path" : "/internal/inventory/items/2b48e44b-77b3-4bd2-b433-a6a393fce977",
+    "key" : null,
+    "correlation" : "e8983b2e-a803-451a-8004-7a9b6c0f5ad6",
+    "status" : 200
+  }, {
+    "method" : "POST",
+    "path" : "/internal/inventory/consumptions",
+    "key" : "c42e3e13-a8d1-4803-a385-8d8be4d777a0",
+    "correlation" : "e8983b2e-a803-451a-8004-7a9b6c0f5ad6",
+    "status" : 409
+  }, {
+    "method" : "POST",
+    "path" : "/internal/inventory/consumptions",
+    "key" : "8c46b12d-77d8-4528-9330-8c09d26f3611",
+    "correlation" : "e8983b2e-a803-451a-8004-7a9b6c0f5ad6",
+    "status" : 200
+  }, {
+    "method" : "GET",
+    "path" : "/internal/inventory/operations/c42e3e13-a8d1-4803-a385-8d8be4d777a0",
+    "key" : null,
+    "correlation" : "e8983b2e-a803-451a-8004-7a9b6c0f5ad6",
+    "status" : 200
+  }, {
+    "method" : "GET",
+    "path" : "/internal/inventory/operations/8c46b12d-77d8-4528-9330-8c09d26f3611",
+    "key" : null,
+    "correlation" : "e8983b2e-a803-451a-8004-7a9b6c0f5ad6",
+    "status" : 200
+  }, {
+    "method" : "POST",
+    "path" : "/internal/inventory/consumptions/8c46b12d-77d8-4528-9330-8c09d26f3611/reversal",
+    "key" : "af125a86-dfaa-484c-b7a1-d1fdb6b6fa7c",
+    "correlation" : "e8983b2e-a803-451a-8004-7a9b6c0f5ad6",
+    "status" : 200
+  }, {
+    "method" : "GET",
+    "path" : "/internal/inventory/operations/8c46b12d-77d8-4528-9330-8c09d26f3611",
+    "key" : null,
+    "correlation" : "e8983b2e-a803-451a-8004-7a9b6c0f5ad6",
+    "status" : 200
+  }, {
+    "method" : "GET",
+    "path" : "/internal/inventory/operations/808e5ce9-dd37-4feb-afe3-bfbe28a44c5a",
+    "key" : null,
+    "correlation" : "e8983b2e-a803-451a-8004-7a9b6c0f5ad6",
+    "status" : 404
+  }, {
+    "method" : "GET",
+    "path" : "/internal/inventory/operations/808e5ce9-dd37-4feb-afe3-bfbe28a44c5a",
+    "key" : null,
+    "correlation" : "e8983b2e-a803-451a-8004-7a9b6c0f5ad6",
+    "status" : 404
+  }, {
+    "method" : "POST",
+    "path" : "/internal/inventory/consumptions/808e5ce9-dd37-4feb-afe3-bfbe28a44c5a/reversal",
+    "key" : "cb5a568f-84ae-4aa8-b0e4-8cb63e22929a",
+    "correlation" : "e8983b2e-a803-451a-8004-7a9b6c0f5ad6",
+    "status" : 200
+  } ],
+  "reversed" : {
+    "operationId" : "8c46b12d-77d8-4528-9330-8c09d26f3611",
+    "result" : "REVERSED",
+    "movements" : [ "11cde000-f62b-431d-8a83-e95a4ede8eda" ],
+    "compensationId" : "af125a86-dfaa-484c-b7a1-d1fdb6b6fa7c"
+  },
+  "material" : "2b48e44b-77b3-4bd2-b433-a6a393fce977"
+}

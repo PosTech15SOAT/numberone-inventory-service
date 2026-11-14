@@ -1,0 +1,10 @@
+# CI/CD
+
+- Push em `feature/**` executa CI e procura ou abre PR para `develop`; push em `develop` executa CI e procura ou abre PR para `main` se houver commits a promover. O PR existente recebe os novos commits. Revisão, aprovação e merge são manuais.
+- PRs para `develop` e `main` e pushes em `main` também executam CI. O job `test-and-build` publica os relatórios; a falha de automação de PR é independente do resultado do CI. Na OS, PR para `main` deve vir de `develop` no mesmo repositório; seu check existente é preservado.
+- A automação usa `GITHUB_TOKEN` com `contents: read` e `pull-requests: write`. Se a criação for bloqueada, habilite **Allow GitHub Actions to create and approve pull requests** em Settings → Actions → General → Workflow permissions, na organização e, se aplicável, no repositório. A política superior pode impedir a configuração. O workflow não aprova PRs; enquanto bloqueado, crie-os manualmente. O GitHub pode exigir que alguém com escrita aprove os workflows do PR criado pelo token.
+- Para implantar, após integrar em `main`, selecione Actions → workflow de deploy manual → Run workflow → `main`. Ele valida o commit, publica o JAR validado no ECR e aplica a imagem por digest no EKS, com rollout e health checks. Push e PR não fazem deploy.
+- Organization Variables: `AWS_ACCOUNT_ID`, `AWS_REGION`, `EKS_CLUSTER_NAME`, `DB_IDENTIFIER`. Organization Secrets: `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN` válidos. Valores previstos: conta `891377201345`, região `us-east-1`, cluster `numberone-eks`, RDS `numberone-postgres`.
+- O ARN do secret de banco é descoberto automaticamente com Terraform; não configure `DB_SECRET_ARN` no GitHub. O secret de aplicação no Secrets Manager deve conter `username` e `password` distintos da credencial master. O banco, as permissões AWS/EKS e o acesso de rede devem estar prontos antes do deploy.
+
+Inventory: Java 21, PostgreSQL descartável no CI, ECR e namespace `numberone-inventory`. Repository Variable obrigatória: `DB_APP_USERNAME`, igual ao usuário do secret `numberone-inventory-database`. O CI exige 80% de cobertura de linhas pelo JaCoCo.

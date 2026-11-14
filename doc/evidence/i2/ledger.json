@@ -1,0 +1,150 @@
+{
+    "balances": [
+        {
+            "itemId": "2b48e44b-77b3-4bd2-b433-a6a393fce977",
+            "balance": 5
+        },
+        {
+            "itemId": "e0aee51f-8dcb-404d-ab48-7153f4142512",
+            "balance": 0
+        }
+    ],
+    "movements": [
+        {
+            "id": "1456e8e4-b47e-47bd-9416-f7152eaeaea2",
+            "created_at": "2026-11-10T01:04:13.929575",
+            "observacao": null,
+            "operation_id": "8c46b12d-77d8-4528-9330-8c09d26f3611",
+            "compensation_id": null,
+            "id_item_estoque": "2b48e44b-77b3-4bd2-b433-a6a393fce977",
+            "quantidade_antes": 5,
+            "quantidade_depois": 4,
+            "tipo_movimentacao": "BAIXA",
+            "origem_movimentacao": "ORDEM_SERVICO",
+            "original_movement_id": null,
+            "referencia_origem_id": "18bafdc7-df68-47b9-810c-e55c6445ef0a",
+            "usuario_responsavel_id": "23a702a1-f62a-4926-be90-35a593a0a7c8"
+        },
+        {
+            "id": "11cde000-f62b-431d-8a83-e95a4ede8eda",
+            "created_at": "2026-11-10T01:04:14.259607",
+            "observacao": "Compensacao af125a86-dfaa-484c-b7a1-d1fdb6b6fa7c",
+            "operation_id": "8c46b12d-77d8-4528-9330-8c09d26f3611",
+            "compensation_id": "af125a86-dfaa-484c-b7a1-d1fdb6b6fa7c",
+            "id_item_estoque": "2b48e44b-77b3-4bd2-b433-a6a393fce977",
+            "quantidade_antes": 4,
+            "quantidade_depois": 5,
+            "tipo_movimentacao": "ENTRADA",
+            "origem_movimentacao": "ORDEM_SERVICO",
+            "original_movement_id": "1456e8e4-b47e-47bd-9416-f7152eaeaea2",
+            "referencia_origem_id": "18bafdc7-df68-47b9-810c-e55c6445ef0a",
+            "usuario_responsavel_id": "23a702a1-f62a-4926-be90-35a593a0a7c8"
+        }
+    ],
+    "migrations": [
+        {
+            "success": true,
+            "version": "1",
+            "checksum": 470359204
+        },
+        {
+            "success": true,
+            "version": "2",
+            "checksum": 3489036
+        },
+        {
+            "success": true,
+            "version": "3",
+            "checksum": -1585769654
+        },
+        {
+            "success": true,
+            "version": "4",
+            "checksum": -2068998895
+        }
+    ],
+    "operations": [
+        {
+            "status": "CLOSED",
+            "created_at": "2026-11-10T01:04:14.489842+00:00",
+            "updated_at": "2026-11-10T01:04:14.489842+00:00",
+            "operation_id": "808e5ce9-dd37-4feb-afe3-bfbe28a44c5a",
+            "request_hash": null,
+            "compensation_id": "cb5a568f-84ae-4aa8-b0e4-8cb63e22929a",
+            "ordem_servico_id": null,
+            "item_ordem_servico_id": null,
+            "usuario_responsavel_id": null
+        },
+        {
+            "status": "REVERSED",
+            "created_at": "2026-11-10T01:04:13.927719+00:00",
+            "updated_at": "2026-11-10T01:04:14.261688+00:00",
+            "operation_id": "8c46b12d-77d8-4528-9330-8c09d26f3611",
+            "request_hash": "05e6dd320986e4a0d168b4c789e083d65ec2fcf94171480ae18fd510af754664",
+            "compensation_id": "af125a86-dfaa-484c-b7a1-d1fdb6b6fa7c",
+            "ordem_servico_id": "7861cb85-b7bf-4166-bfac-7c23a3b813da",
+            "item_ordem_servico_id": "18bafdc7-df68-47b9-810c-e55c6445ef0a",
+            "usuario_responsavel_id": "23a702a1-f62a-4926-be90-35a593a0a7c8"
+        },
+        {
+            "status": "INSUFFICIENT_STOCK",
+            "created_at": "2026-11-10T01:04:13.61698+00:00",
+            "updated_at": "2026-11-10T01:04:13.620353+00:00",
+            "operation_id": "c42e3e13-a8d1-4803-a385-8d8be4d777a0",
+            "request_hash": "7c2d1e8bfaaa99492915fde759af0a851bc3ebad4b701e859142e154a4fd8973",
+            "compensation_id": null,
+            "ordem_servico_id": "7861cb85-b7bf-4166-bfac-7c23a3b813da",
+            "item_ordem_servico_id": "36363425-c402-4601-9ee4-e8b82f3ffb95",
+            "usuario_responsavel_id": "23a702a1-f62a-4926-be90-35a593a0a7c8"
+        }
+    ],
+    "compensations": [
+        {
+            "result": {
+                "status": "REVERSED",
+                "movements": [
+                    "11cde000-f62b-431d-8a83-e95a4ede8eda"
+                ],
+                "operationId": "8c46b12d-77d8-4528-9330-8c09d26f3611",
+                "compensationId": "af125a86-dfaa-484c-b7a1-d1fdb6b6fa7c"
+            },
+            "request": {
+                "reason": "VERIFIED_RETURN",
+                "evidence": {
+                    "reference": "I2: material conferido e devolvido antes do uso",
+                    "verifiedAt": "2026-11-10T01:04:14.054371395Z",
+                    "verifiedBy": "23a702a1-f62a-4926-be90-35a593a0a7c8"
+                },
+                "compensationId": "af125a86-dfaa-484c-b7a1-d1fdb6b6fa7c",
+                "unusedConfirmed": true
+            },
+            "created_at": "2026-11-10T01:04:14.24578+00:00",
+            "operation_id": "8c46b12d-77d8-4528-9330-8c09d26f3611",
+            "request_hash": "01f01964d398fa84ef6982cc6d9c1cecb12b279c5e23b5437ebde508cb4dd785",
+            "compensation_id": "af125a86-dfaa-484c-b7a1-d1fdb6b6fa7c"
+        },
+        {
+            "result": {
+                "status": "CLOSED",
+                "movements": [
+                ],
+                "operationId": "808e5ce9-dd37-4feb-afe3-bfbe28a44c5a",
+                "compensationId": "cb5a568f-84ae-4aa8-b0e4-8cb63e22929a"
+            },
+            "request": {
+                "reason": "VERIFIED_RETURN",
+                "evidence": {
+                    "reference": "I2: material conferido e devolvido antes do uso",
+                    "verifiedAt": "2026-11-10T01:04:14.054371395Z",
+                    "verifiedBy": "23a702a1-f62a-4926-be90-35a593a0a7c8"
+                },
+                "compensationId": "cb5a568f-84ae-4aa8-b0e4-8cb63e22929a",
+                "unusedConfirmed": true
+            },
+            "created_at": "2026-11-10T01:04:14.484714+00:00",
+            "operation_id": "808e5ce9-dd37-4feb-afe3-bfbe28a44c5a",
+            "request_hash": "367577ef32c0ef06e7a231dae1b0a0ef6639abc3fbfb9cee7c708f8c7ed49a7a",
+            "compensation_id": "cb5a568f-84ae-4aa8-b0e4-8cb63e22929a"
+        }
+    ]
+}

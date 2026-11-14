@@ -1,0 +1,22 @@
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.040 s -- in br.com.numberone.inventory.adapter.in.web.ConsultarPrecosControllerTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.305 s -- in br.com.numberone.inventory.adapter.in.web.ConsultarPrecosWebMvcTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.308 s -- in br.com.numberone.inventory.adapter.out.persistence.ItemEstoquePersistenceAdapterTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.073 s -- in br.com.numberone.inventory.adapter.out.persistence.OperacaoConsumoItemPersistenceAdapterTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.066 s -- in br.com.numberone.inventory.adapter.out.persistence.OperacaoConsumoPersistenceAdapterTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.011 s -- in br.com.numberone.inventory.application.service.CalculadorHashConsumoServiceTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.033 s -- in br.com.numberone.inventory.application.service.ConsultarPrecosServiceTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s -- in br.com.numberone.inventory.application.service.ConsultarSaldoDisponivelServiceTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.077 s -- in br.com.numberone.inventory.application.service.ConsumirEstoqueServiceTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s -- in br.com.numberone.inventory.domain.model.ItemEstoqueTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.015 s -- in br.com.numberone.inventory.domain.model.MovimentacaoEstoqueTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.009 s -- in br.com.numberone.inventory.domain.model.OperacaoConsumoEstoqueTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.009 s -- in br.com.numberone.inventory.domain.model.SolicitacaoConsumoEstoqueTest
+I2 RACE CLOSED_FIRST item=2734c01d-b922-49b6-87ab-01c658ed796b operation=a6140852-35fa-4eb2-aa13-f17b53aa6e6d compensation=42a66625-ea82-4925-bde8-955d02d180c2 balances=[5,5,5] result={"operationId":"a6140852-35fa-4eb2-aa13-f17b53aa6e6d","result":"CLOSED","movements":[],"compensationId":"42a66625-ea82-4925-bde8-955d02d180c2"}
+I2 RACE CONSUMED_FIRST item=995aa403-67a9-4f82-b193-7f8308a65b44 operation=99595e53-5de1-4672-b257-060de8fab273 compensation=d7c085fd-8166-4d8b-9999-e3188c63b6db balances=[5,4,5,5] result={"operationId":"99595e53-5de1-4672-b257-060de8fab273","result":"REVERSED","movements":["84ca370e-72ea-4df8-a84c-4a59027541ce"],"compensationId":"d7c085fd-8166-4d8b-9999-e3188c63b6db"}
+I2 BATCH operation=8dab012f-0e76-4a02-af0e-591e6c3652db original=[201f3fa1-5244-4797-8334-2e53b2cac4c9, 7530bf6e-3357-4705-90c3-dd26ffffd647] reversal={"operationId":"8dab012f-0e76-4a02-af0e-591e6c3652db","result":"REVERSED","movements":["5138444b-9a04-45d5-ab18-b0aa09bc7206","9ef01c10-3b8f-4d79-b79c-577b3d7b7029"],"compensationId":"b48bb93d-7eca-4e7d-b3cb-5117facc0c55"} balances=[5/3,3/2,5/3]
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 15.06 s -- in br.com.numberone.inventory.InventoryI2PostgresTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.339 s -- in br.com.numberone.inventory.InventoryServiceApplicationTests
+[INFO] Tests run: 93, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+[INFO] Total time:  43.488 s
+[INFO] Finished at: 2026-11-10T01:01:48Z

@@ -1,0 +1,24 @@
+[
+  {
+    "compensationId": "42a66625-ea82-4925-bde8-955d02d180c2",
+    "operationId": "a6140852-35fa-4eb2-aa13-f17b53aa6e6d",
+    "replayAfterRestart": {
+      "operationId": "a6140852-35fa-4eb2-aa13-f17b53aa6e6d",
+      "result": "CLOSED",
+      "movements": [],
+      "compensationId": "42a66625-ea82-4925-bde8-955d02d180c2"
+    }
+  },
+  {
+    "compensationId": "d7c085fd-8166-4d8b-9999-e3188c63b6db",
+    "operationId": "99595e53-5de1-4672-b257-060de8fab273",
+    "replayAfterRestart": {
+      "operationId": "99595e53-5de1-4672-b257-060de8fab273",
+      "result": "REVERSED",
+      "movements": [
+        "84ca370e-72ea-4df8-a84c-4a59027541ce"
+      ],
+      "compensationId": "d7c085fd-8166-4d8b-9999-e3188c63b6db"
+    }
+  }
+]
