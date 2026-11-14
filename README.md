@@ -51,3 +51,10 @@ A consulta não altera nem reserva estoque. IDs repetidos são consultados uma �
 As chamadas internas devem enviar `X-Correlation-Id: <uuid>`. Cadastro de itens e entrada de estoque exigem `X-Authenticated-Subject: <uuid>` para registrar o autor declarado; a aplicação não autentica essa identidade.
 
 **Débito técnico:** MVP — Ausência de autenticação e autorização HTTP nos microserviços. Identidade dos serviços, autorização, NetworkPolicies e TLS/mTLS ficam para evolução futura.
+
+## Preparação integrada de deploy
+
+A documentação transversal está no clone irmão
+[Billing: prontidão EKS](../numberone-billing-service/docs/deployment/eks-readiness/README.md).
+A orquestração local compartilhada passa a ficar em
+[Billing/dev/kind](../numberone-billing-service/dev/kind/README.md), reutilizando este overlay Kind.
