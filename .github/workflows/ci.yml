@@ -51,7 +51,7 @@ jobs:
           distribution: temurin
           java-version: '21'
           cache: maven
-      - name: Executar testes e exigir 80% de cobertura
+      - name: Executar testes, exigir 80% de cobertura e verificar PMD
         run: |
           chmod +x mvnw
           ./mvnw --batch-mode clean verify
@@ -88,6 +88,7 @@ jobs:
         with:
           name: validation-reports
           path: |
+            target/pmd.xml
             target/surefire-reports
             target/site/jacoco
             rendered-manifests
