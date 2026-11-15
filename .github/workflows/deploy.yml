@@ -1,6 +1,9 @@
-name: Deploy manual Inventory
+name: Deploy Inventory
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
@@ -20,6 +23,7 @@ jobs:
 
   deploy:
     name: Publicar e implantar no EKS
+    if: github.ref == 'refs/heads/main'
     needs: validate
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -140,10 +144,22 @@ jobs:
           aws secretsmanager get-secret-value --secret-id "$DB_SECRET_ARN" \
             --query SecretString --output text > "$runtime/credentials.json"
           if ! jq -e --arg username "$DB_APP_USERNAME" --slurpfile rds "$runtime/rds.json" '
-            .username == $username and .username != $rds[0].MasterUsername
-            and (.password | type == "string" and length > 0)
-          ' "$runtime/credentials.json" >/dev/null 2>&1; then
+            select(.username == $username and .username != $rds[0].MasterUsername
+              and (.password | type == "string" and length > 0)) | {
+              apiVersion: "v1", kind: "Secret", type: "Opaque",
+              metadata: {name: "numberone-inventory-database", namespace: env.K8S_NAMESPACE},
+              stringData: {
+                DB_URL: "jdbc:postgresql://\($rds[0].Endpoint.Address):\($rds[0].Endpoint.Port)/numberone_inventory?sslmode=require",
+                DB_USERNAME: .username, DB_PASSWORD: .password
+              }
+            }
+          ' "$runtime/credentials.json" > "$runtime/database.json" 2>/dev/null; then
             echo "::error::O Secret precisa conter a credencial exclusiva da aplicação."
+            exit 1
+          fi
+          if ! kubectl apply --server-side --field-manager=numberone-inventory-deploy --dry-run=server \
+               -f "$runtime/database.json" >/dev/null 2>&1; then
+            echo "::error::Falha ao validar o Secret exclusivo do serviço."
             exit 1
           fi
 
@@ -184,15 +200,11 @@ jobs:
                 }' > "$runtime/database.json" 2>/dev/null
           bash scripts/render-kubernetes.sh > "$runtime/manifests.yaml"
           kubectl apply --dry-run=server -f "$runtime/manifests.yaml"
-          for mode in dry-run apply; do
-            arguments=()
-            if [[ "$mode" == dry-run ]]; then arguments+=(--dry-run=server); fi
-            if ! kubectl apply --server-side --field-manager=numberone-inventory-deploy "${arguments[@]}" \
-                 -f "$runtime/database.json" >/dev/null 2>&1; then
-              echo "::error::Falha ao validar ou sincronizar o Secret exclusivo do serviço."
-              exit 1
-            fi
-          done
+          if ! kubectl apply --server-side --field-manager=numberone-inventory-deploy \
+               -f "$runtime/database.json" >/dev/null 2>&1; then
+            echo "::error::Falha ao sincronizar o Secret exclusivo do serviço."
+            exit 1
+          fi
           kubectl apply -f "$runtime/manifests.yaml"
           kubectl -n "$K8S_NAMESPACE" rollout status deployment/numberone-inventory --timeout=10m
           deployed="$(kubectl -n "$K8S_NAMESPACE" get deployment numberone-inventory \
