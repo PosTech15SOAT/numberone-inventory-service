@@ -4,6 +4,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import tools.jackson.databind.ObjectMapper;
@@ -32,14 +33,24 @@ class InventoryAccessFilter extends OncePerRequestFilter {
         request.setAttribute(InventoryHttp.REQUEST_CORRELATION, responseCorrelation);
         response.setHeader(InventoryHttp.CORRELATION, responseCorrelation.toString());
 
-        String path = request.getRequestURI().substring(request.getContextPath().length());
-        if ((path.equals("/internal/inventory") || path.startsWith("/internal/inventory/")) && correlation == null) {
-            response.setStatus(400);
-            response.setContentType("application/json");
-            json.writeValue(response.getOutputStream(), new InventoryHttp.Problem(
-                    "INVALID_REQUEST", "X-Correlation-Id deve ser um UUID.", responseCorrelation, null));
-            return;
+        String previousCorrelation = MDC.get("correlation_id");
+        MDC.put("correlation_id", responseCorrelation.toString());
+        try {
+            String path = request.getRequestURI().substring(request.getContextPath().length());
+            if ((path.equals("/internal/inventory") || path.startsWith("/internal/inventory/")) && correlation == null) {
+                response.setStatus(400);
+                response.setContentType("application/json");
+                json.writeValue(response.getOutputStream(), new InventoryHttp.Problem(
+                        "INVALID_REQUEST", "X-Correlation-Id deve ser um UUID.", responseCorrelation, null));
+                return;
+            }
+            chain.doFilter(request, response);
+        } finally {
+            if (previousCorrelation == null) {
+                MDC.remove("correlation_id");
+            } else {
+                MDC.put("correlation_id", previousCorrelation);
+            }
         }
-        chain.doFilter(request, response);
     }
 }

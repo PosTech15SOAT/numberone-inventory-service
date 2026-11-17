@@ -9,6 +9,8 @@ spec:
         - name: inventory
           imagePullPolicy: Never
           env:
+            - name: DD_TRACE_ENABLED
+              value: "false"
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:

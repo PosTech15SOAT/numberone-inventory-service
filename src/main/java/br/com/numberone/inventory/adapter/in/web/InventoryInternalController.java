@@ -55,7 +55,10 @@ class InventoryInternalController {
                 InventoryHttp.uuid(body.serviceOrderItemId()), InventoryHttp.uuid(body.responsibleUserId()),
                 body.items().stream().map(Supply::toDomain).toList());
         var resultado = consumo.consumir(pedido);
-        log.info("CT-05 correlationId={} operationId={} result={}", correlation, operationId, resultado.status());
+        safely(() -> log.atInfo().addKeyValue("event.code", "INVENTORY_CONSUMPTION_PROCESSED")
+                .addKeyValue("service_order.id", pedido.serviceOrderId())
+                .addKeyValue("operation.id", operationId).addKeyValue("event.outcome", resultado.status())
+                .log("CT-05: consumo de estoque processado"));
         return switch (resultado.status()) {
             case CONSUMED -> ResponseEntity.ok(OperationReply.from(resultado));
             case INSUFFICIENT_STOCK -> ResponseEntity.status(409).body(OperationReply.from(resultado));
@@ -75,8 +78,9 @@ class InventoryInternalController {
             throw new IllegalArgumentException("Idempotency-Key deve corresponder ao compensationId.");
         }
         var resultado = compensacao.compensar(id, body);
-        log.info("CT-08B correlationId={} operationId={} compensationId={} result={}",
-                correlation, id, compensationId, resultado.status());
+        safely(() -> log.atInfo().addKeyValue("event.code", "INVENTORY_COMPENSATION_PROCESSED")
+                .addKeyValue("operation.id", id).addKeyValue("compensation.id", compensationId)
+                .addKeyValue("event.outcome", resultado.status()).log("CT-08B: compensação de estoque processada"));
         // Translate after commit so the confirmed refusal and its compensation audit remain durable.
         if (resultado.status() == StatusOperacaoConsumo.INSUFFICIENT_STOCK) {
             return ResponseEntity.status(409).body(new InventoryHttp.Problem("OPERATION_ALREADY_REJECTED",
@@ -91,15 +95,23 @@ class InventoryInternalController {
         UUID id = InventoryHttp.uuid(operationId);
         var resultado = consumo.consultar(id);
         if (resultado.isEmpty()) {
-            log.info("CT-08 correlationId={} operationId={} result=UNKNOWN", correlation, id);
+            safely(() -> log.atInfo().addKeyValue("event.code", "INVENTORY_OPERATION_QUERIED")
+                    .addKeyValue("operation.id", id).addKeyValue("event.outcome", "UNKNOWN")
+                    .log("CT-08: operação de estoque consultada"));
             return ResponseEntity.status(404).body(new OperationReply(id, "UNKNOWN", null, null, null));
         }
         var resposta = OperationReply.from(resultado.get());
-        log.info("CT-08 correlationId={} operationId={} result={}", correlation, id, resposta.result());
+        safely(() -> log.atInfo().addKeyValue("event.code", "INVENTORY_OPERATION_QUERIED")
+                .addKeyValue("operation.id", id).addKeyValue("event.outcome", resposta.result())
+                .log("CT-08: operação de estoque consultada"));
         if (resultado.get().status() == StatusOperacaoConsumo.PROCESSING) {
             return ResponseEntity.accepted().header("Retry-After", "1").body(resposta);
         }
         return ResponseEntity.ok(resposta);
+    }
+
+    private static void safely(Runnable logging) {
+        try { logging.run(); } catch (RuntimeException ignored) { /* Não altera a operação. */ }
     }
 
     record MaterialReference(UUID id, String description, String referenceUnitPrice, boolean active) { }

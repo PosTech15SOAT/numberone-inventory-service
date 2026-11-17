@@ -35,6 +35,18 @@ spec:
           envFrom:
             - configMapRef: {name: numberone-inventory-config}
           env:
+            - name: DD_SERVICE
+              value: numberone-inventory
+            - name: DD_ENV
+              value: academy
+            - name: DD_AGENT_HOST
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: DD_TRACE_ENABLED
+              value: "true"
+            - name: DD_LOGS_INJECTION
+              value: "true"
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef: {name: numberone-inventory-database, key: DB_PASSWORD}
