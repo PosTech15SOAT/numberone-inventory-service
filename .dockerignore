@@ -8,3 +8,4 @@
 !Dockerfile
 !target/
 !target/inventory-service-*.jar
+!entrypoint.sh
