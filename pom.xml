@@ -28,8 +28,14 @@
 	</scm>
 	<properties>
 		<java.version>21</java.version>
+		<dd-trace.version>1.64.2</dd-trace.version>
 	</properties>
 	<dependencies>
+		<dependency>
+			<groupId>com.datadoghq</groupId>
+			<artifactId>dd-trace-api</artifactId>
+			<version>${dd-trace.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
