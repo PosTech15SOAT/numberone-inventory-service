@@ -52,6 +52,8 @@ jobs:
         run: |
           chmod +x mvnw
           ./mvnw --batch-mode clean verify
+      - name: Analisar código com PMD e bloquear violações críticas
+        run: ./mvnw --batch-mode org.apache.maven.plugins:maven-pmd-plugin:3.28.0:check -Dpmd.failurePriority=2
       - name: Construir imagem do JAR validado
         run: docker build --target verified -t numberone-inventory-service:${{ github.sha }} .
       - name: Configurar kubectl
@@ -84,5 +86,6 @@ jobs:
             target/surefire-reports
             target/failsafe-reports
             target/site
+            target/pmd.xml
             rendered-manifests
           if-no-files-found: warn
