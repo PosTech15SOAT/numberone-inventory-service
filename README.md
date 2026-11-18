@@ -1,5 +1,18 @@
 # NumberOne Inventory Service
 
+## CI/CD da Fase 4
+
+Push em `feature/**` abre PR para `develop` quando necessário; o PR executa
+o CI. Push em `develop` abre PR para `main`, também sujeito ao CI. O merge na
+`main` aciona o deploy, que valida o mesmo commit antes de publicar a imagem
+no ECR e atualizar o EKS. O deploy também aceita acionamento manual na `main`.
+A `main` exige PR e o check `Validação obrigatória`.
+
+O CI usa Java 21, PostgreSQL descartável para testes, JaCoCo com mínimo de
+80% de linhas, PMD 3.28.0 com bloqueio das prioridades 1 e 2, imagem Docker
+e validação dos manifests. Relatórios de testes, cobertura e PMD ficam nos
+artifacts da execução. Achados PMD de prioridades 3 a 5 exigem triagem.
+
 Microsserviço de estoque (Java 21, Spring Boot 4.1.2, PostgreSQL 17, Flyway).
 
 ## Organização em Clean Architecture
@@ -19,6 +32,8 @@ br.com.numberone.inventory
 **Regra de dependência:** `adapter -> application -> domain`. Os controllers dependem dos contratos `application.port.in`; os serviços dependem de `application.port.out`; JPA implementa as portas de saída. Anotações de transação e injeção continuam na implementação dos casos de uso, preservando o comportamento do Spring.
 
 ## Funcionalidades preservadas
+
+[Collection Postman Inventory](docs/postman/numberone-inventory.postman_collection.json) · importe no Postman ou no Insomnia. Use o API Gateway em modo full e um JWT de operador para cadastrar peças, registrar entradas e consultar saldos e movimentos. Os endpoints internos usados na Saga aparecem abaixo.
 
 - Consulta de preços: `POST /internal/inventory/consultar-precos`.
 - Consumo idempotente de estoque: `POST /internal/inventory/consumptions`.
