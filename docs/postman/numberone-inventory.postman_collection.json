@@ -1,0 +1,158 @@
+{
+  "info": {
+    "name": "NumberOne · Inventory",
+    "description": "Rotas administrativas de Inventory publicadas pelo API Gateway em modo full. Preencha baseUrl sem barra final e operatorToken com o JWT de operador. Use um UUID em correlationId. Use um item de homologação com sufixo único em itemCode e copie o id retornado para itemId.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "operatorToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "correlationId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "itemCode",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "itemId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Cadastrar peça",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/admin/itens",
+        "description": "Preencha itemCode com um sufixo único de teste. Copie o id retornado para itemId.",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{operatorToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          },
+          "raw": "{\n  \"codigo\": \"VID-OK-{{itemCode}}\",\n  \"nome\": \"Peça disponível {{itemCode}}\",\n  \"descricao\": \"Massa sintética do vídeo da Fase 4\",\n  \"tipoItem\": \"PECA\",\n  \"unidadeMedida\": \"UNIDADE\",\n  \"quantidadeEstoque\": 0,\n  \"estoqueMinimo\": 0,\n  \"custoUnitario\": \"10.00\",\n  \"precoVenda\": \"20.40\",\n  \"ativo\": true\n}"
+        },
+        "header": [
+          {
+            "key": "X-Correlation-Id",
+            "value": "{{correlationId}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Registrar entrada de estoque",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/admin/estoque/entrada",
+        "description": "Registre uma entrada de três unidades para o item de teste.",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{operatorToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          },
+          "raw": "{\n  \"idItemEstoque\": \"{{itemId}}\",\n  \"origemMovimentacao\": \"COMPRA\",\n  \"quantidade\": 3\n}"
+        },
+        "header": [
+          {
+            "key": "X-Correlation-Id",
+            "value": "{{correlationId}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Consultar item e saldo",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/admin/itens/{{itemId}}",
+        "description": "Consulte o item e a quantidade em estoque por itemId.",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{operatorToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "header": [
+          {
+            "key": "X-Correlation-Id",
+            "value": "{{correlationId}}"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Listar movimentações do item",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/admin/estoque/itens/{{itemId}}/movimentacoes",
+        "description": "Confira a entrada e demais movimentações associadas ao itemId informado.",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{operatorToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "header": [
+          {
+            "key": "X-Correlation-Id",
+            "value": "{{correlationId}}"
+          }
+        ]
+      }
+    }
+  ]
+}

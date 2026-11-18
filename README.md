@@ -33,6 +33,8 @@ br.com.numberone.inventory
 
 ## Funcionalidades preservadas
 
+[Collection Postman Inventory](docs/postman/numberone-inventory.postman_collection.json) · importe no Postman ou no Insomnia. Use o API Gateway em modo full e um JWT de operador para cadastrar peças, registrar entradas e consultar saldos e movimentos. Os endpoints internos usados na Saga aparecem abaixo.
+
 - Consulta de preços: `POST /internal/inventory/consultar-precos`.
 - Consumo idempotente de estoque: `POST /internal/inventory/consumptions`.
 - Consulta de operação: `GET /internal/inventory/operations/{operationId}`.
